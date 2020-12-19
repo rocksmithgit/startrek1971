@@ -2,8 +2,9 @@ Just forked this one - planning on taking it to the next level ...
 
 Want to help? Feel free!
 
--- _Randall
+-- Randall
 
+p.s. Converted to Python 3. Lightly tested - okay!
 
 
 
