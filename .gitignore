@@ -4,5 +4,8 @@
 
 /.vs/slnx.sqlite
 /.vs/startrek1971/v16/.suo
-/__pycache__/strings.cpython-37.pyc
+/__pycache__/TrekStrings.cpython-37.pyc
 /.vs/ProjectSettings.json
+/__pycache__/strings.cpython-37.pyc
+/__pycache__/AbsDisplay.cpython-37.pyc
+/.vs/VSWorkspaceState.json
