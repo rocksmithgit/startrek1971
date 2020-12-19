@@ -1,0 +1,8 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/slnx.sqlite
+/.vs/startrek1971/v16/.suo
+/__pycache__/strings.cpython-37.pyc
+/.vs/ProjectSettings.json
