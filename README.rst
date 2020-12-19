@@ -1,8 +1,11 @@
-** Just forked this one - planning on taking it to the next level ... **
+Just forked this one - planning on taking it to the next level ...
 
-** Want to help? Feel free! **
+Want to help? Feel free!
 
-** -- _Randall_ **
+-- _Randall
+
+
+
 
 
 
