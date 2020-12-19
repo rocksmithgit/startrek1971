@@ -91,7 +91,7 @@ def print_game_status():
 
 
 def command_prompt():
-    command = input("Enter command: ").strip().lower()
+    command = game.read("Enter command: ").strip().lower()
     game.display()
     if command == "nav":
         navigation()
@@ -120,7 +120,7 @@ def computer_controls():
         game.display()
         return
     print_strings(TrekStrings.computerStrings)
-    command = input("Enter computer command: ").strip().lower()
+    command = game.read("Enter computer command: ").strip().lower()
     if command == "rec":
         display_galactic_record()
     elif command == "sta":
@@ -172,12 +172,12 @@ def navigation_calculator():
     game.display("Enterprise located in quadrant [%s,%s]." % \
         (game.quadrant_x + 1, game.quadrant_y + 1))
     game.display()
-    quad_x = input_double("Enter destination quadrant X (1--8): ")
+    quad_x = game.read_double("Enter destination quadrant X (1--8): ")
     if quad_x is False or quad_x < 1 or quad_x > 8:
         game.display("Invalid X coordinate.")
         game.display()
         return
-    quad_y = input_double("Enter destination quadrant Y (1--8): ")
+    quad_y = game.read_double("Enter destination quadrant Y (1--8): ")
     if quad_y is False or quad_y < 1 or quad_y > 8:
         game.display("Invalid Y coordinate.")
         game.display()
@@ -276,7 +276,7 @@ def phaser_controls():
         game.display()
         return
     game.display("Phasers locked on target.")
-    phaser_energy = input_double("Enter phaser energy (1--{0}): ".format(game.energy))
+    phaser_energy = game.read_double("Enter phaser energy (1--{0}): ".format(game.energy))
     if not phaser_energy or phaser_energy < 1 or phaser_energy > game.energy:
         game.display("Invalid energy level.")
         game.display()
@@ -317,7 +317,7 @@ def shield_controls():
     game.display("sub = Subtract energy from shields.")
     game.display()
     game.display("Enter shield control command: ")
-    command = input("Enter shield control command: ").strip().lower()
+    command = game.read("Enter shield control command: ").strip().lower()
     game.display()
     if command == "add":
         adding = True
@@ -329,7 +329,7 @@ def shield_controls():
         game.display("Invalid command.")
         game.display()
         return
-    transfer = input_double(
+    transfer = game.read_double(
         "Enter amount of energy (1--{0}): ".format(max_transfer))
     if not transfer or transfer < 1 or transfer > max_transfer:
         game.display("Invalid amount of energy.")
@@ -499,7 +499,7 @@ def torpedo_control():
         game.display("There are no Klingon ships in this quadrant.")
         game.display()
         return
-    direction = input_double("Enter firing direction (1.0--9.0): ")
+    direction = game.read_double("Enter firing direction (1.0--9.0): ")
     if not direction or direction < 1.0 or direction > 9.0:
         game.display("Invalid direction.")
         game.display()
@@ -567,13 +567,13 @@ def navigation():
         game.display("Warp engines damaged. Maximum warp factor: {0}".format(max_warp_factor))
         game.display()
 
-    direction = input_double("Enter course (1.0--8.9): ")
+    direction = game.read_double("Enter course (1.0--8.9): ")
     if not direction or direction < 1.0 or direction > 9.0:
         game.display("Invalid course.")
         game.display()
         return
 
-    dist = input_double(
+    dist = game.read_double(
         "Enter warp factor (0.1--{0}): ".format(max_warp_factor))
     if not dist or dist < 0.1 or dist > max_warp_factor:
         game.display("Invalid warp factor.")
@@ -679,16 +679,6 @@ def navigation():
             game.display()
         elif not repair_damage():
             induce_damage(-1)
-
-
-def input_double(prompt):
-    text = input(prompt)
-    value = float(text)
-    if type(value) == float:
-        return value
-    else:
-        return False
-
 
 def generate_sector():
     global game

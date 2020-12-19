@@ -38,6 +38,18 @@ class console(abs_display):
     def display(self, message = ''):
         print(message)
 
+    def read(self, prompt=''):
+        return input(prompt)
+
+    def read_double(self, prompt):
+        text = input(prompt)
+        try:
+            value = float(text)
+            return value
+        except:
+            pass
+        return False
+
 
 
 if __name__ == '__main__':
