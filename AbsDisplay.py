@@ -27,6 +27,12 @@ class abs_display(abc.ABC):
         pass
 
 
+    def print_strings(self, string_list):
+        for string in string_list:
+            self.display(string)
+        self.display()
+
+
 class console(abs_display):
     '''
     The best place to start is by encapsulating the default
@@ -49,6 +55,7 @@ class console(abs_display):
         except:
             pass
         return False
+
 
 
 
