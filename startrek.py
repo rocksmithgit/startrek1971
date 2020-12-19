@@ -767,28 +767,6 @@ def print_sector(quadrant):
     print("-=--=--=--=--=--=--=--=-          Region: {0}".format(quadrant.name))
     print_sector_row(sb, 0, "           Quadrant: [{0},{1}]".format(
         game.quadrant_x + 1, game.quadrant_y + 1))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    0
     print_sector_row(sb, 1, "             Sector: [{0},{1}]".format(game.sector_x + 1, game.sector_y + 1))
     print_sector_row(sb, 2, "           Stardate: {0}".format(game.star_date))
     print_sector_row(sb, 3, "     Time remaining: {0}".format(game.time_remaining))
