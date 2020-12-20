@@ -1,12 +1,10 @@
 from math import atan2, pi, sqrt, cos, sin
 import random
 
-from Map import *
-from Scanners import scanner
-from Assets import Enterprise
-from Aliens import KlingonShip
+from Charts import *
+from AbsShip import *
 
-class calculator(object):
+class Calc(object):
 
     @staticmethod
     def distance(x1, y1, x2, y2):
@@ -60,7 +58,7 @@ class calculator(object):
         # quad_x = quad_y = sect_x = sect_y = 0
         last_sect_x = game.sector_x
         last_sect_y = game.sector_y
-        game.sector[game.sector_y][game.sector_x] = game.sector_type.empty
+        game.sector[game.sector_y][game.sector_x] = Glyphs.SPACE
         obstacle = False
         for i in range(999):
             x += vx
@@ -70,10 +68,10 @@ class calculator(object):
             if quad_x == game.quadrant_x and quad_y == game.quadrant_y:
                 sect_x = int(round(x)) % 8
                 sect_y = int(round(y)) % 8
-                if game.sector[sect_y][sect_x] != game.sector_type.empty:
+                if game.sector[sect_y][sect_x] != Glyphs.SPACE:
                     game.sector_x = last_sect_x
                     game.sector_y = last_sect_y
-                    game.sector[game.sector_y][game.sector_x] = game.sector_type.enterprise
+                    game.sector[game.sector_y][game.sector_x] = Glyphs.ENTERPRISE
                     game.display("Encountered obstacle within quadrant.")
                     game.display()
                     obstacle = True
@@ -97,12 +95,12 @@ class calculator(object):
             if quad_x != game.quadrant_x or quad_y != game.quadrant_y:
                 game.quadrant_x = int(quad_x)
                 game.quadrant_y = int(quad_y)
-                Map.generate_sector(game)
+                Sectors.generate_sector(game)
             else:
                 game.quadrant_x = int(quad_x)
                 game.quadrant_y = int(quad_y)
-                game.sector[game.sector_y][game.sector_x] = game.sector_type.enterprise
-        if Map.is_docking_location(game, game.sector_y, game.sector_x):
+                game.sector[game.sector_y][game.sector_x] = Glyphs.ENTERPRISE
+        if Sectors.is_docking_location(game, game.sector_y, game.sector_x):
             game.enterprise.energy = 3000
             game.photon_torpedoes = 10
             game.enterprise.navigation_damage = 0
@@ -121,7 +119,7 @@ class calculator(object):
             game.time_remaining -= 1
             game.star_date += 1
 
-        scanner.short_range_scan(game)
+        game.enterprise.short_range_scan(game)
 
         if game.enterprise.docked:
             game.display("Lowering shields as part of docking sequence...")
@@ -188,10 +186,10 @@ class calculator(object):
             game.display("That is the current location of the Enterprise.")
             game.display()
             return
-        direction = calculator.compute_direction(game.quadrant_x, game.quadrant_y, qx, qy)
+        direction = Calc.compute_direction(game.quadrant_x, game.quadrant_y, qx, qy)
         game.display("Direction: {0:1.2f}".format(direction))
         game.display("Distance:  {0:2.2f}".format(
-            calculator.distance(game.quadrant_x, game.quadrant_y, qx, qy)))
+            Calc.distance(game.quadrant_x, game.quadrant_y, qx, qy)))
         game.display()
 
     @staticmethod
@@ -199,10 +197,10 @@ class calculator(object):
         game.display()
         if game.quadrants[game.quadrant_y][game.quadrant_x].starbase:
             game.display("Starbase in sector [%s,%s]." % (game.starbase_x + 1, game.starbase_y + 1))
-            direction = calculator.compute_direction(game.sector_x, game.sector_y, game.starbase_x, game.starbase_y)
+            direction = Calc.compute_direction(game.sector_x, game.sector_y, game.starbase_x, game.starbase_y)
             game.display("Direction: {0:1.2f}".format(direction))
             game.display("Distance:  {0:2.2f}".format(
-                calculator.distance(game.sector_x, game.sector_y, game.starbase_x, game.starbase_y) / 8))
+                Calc.distance(game.sector_x, game.sector_y, game.starbase_x, game.starbase_y) / 8))
         else:
             game.display("There are no starbases in this quadrant.")
         game.display()

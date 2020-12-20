@@ -3,17 +3,15 @@ import random
 
 import TrekStrings
 
-from AbsDisplay import console
-from Calculators import calculator
+from AbsDisplay import Con
+from Calculators import Calc
 from Controls import control
-from Scanners import scanner
-from Reports import status
-from Assets import Enterprise
-from Aliens import KlingonShip
-from Map import *
+from Reports import Stats
+from AbsShip import *
+from Charts import *
 
 
-class Game(console):
+class Game(Con):
 
     def __init__(self):
         self.enterprise = Enterprise()
@@ -21,7 +19,6 @@ class Game(console):
         self.time_remaining = 0
         self.klingons = 0
         self.starbases = 0
-        self.sector_type = SectorType()
         self.quadrant_x, self.quadrant_y = 0, 0
         self.sector_x, self.sector_y = 0, 0
         self.photon_torpedoes = 0
@@ -34,26 +31,26 @@ class Game(console):
 
     def run(self):
         self.print_strings(TrekStrings.titleStrings)
-        Map.initialize_game(game)
+        Sectors.initialize_game(game)
         self.print_mission()
-        Map.generate_sector(game)
+        Sectors.generate_sector(game)
         self.print_strings(TrekStrings.commandStrings)
         while self.enterprise.energy > 0 and not \
             self.destroyed and self.klingons > 0 and \
             self.time_remaining > 0:
             self.command_prompt()
-            status.print_game_status(game)
+            Stats.print_game_status(game)
 
 
     def command_prompt(self):
         command = self.read("Enter command: ").strip().lower()
         self.display()
         if command == "nav":
-            calculator.navigation(game)
+            Calc.navigation(game)
         elif command == "srs":
-            scanner.short_range_scan(game)
+            game.enterprise.short_range_scan(game)
         elif command == "lrs":
-            scanner.long_range_scan(game)
+            game.enterprise.long_range_scan(game)
         elif command == "pha":
             control.phaser_controls(game)
         elif command == "tor":

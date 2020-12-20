@@ -2,10 +2,9 @@ from math import pi, sqrt, cos, sin
 import random
 
 import TrekStrings
-from Assets import Enterprise
-from Aliens import KlingonShip
-from Calculators import calculator
-from Reports import status
+from AbsShip import *
+from Calculators import Calc
+from Reports import Stats
 
 
 class control(object):
@@ -19,15 +18,15 @@ class control(object):
         game.print_strings(TrekStrings.computerStrings)
         command = game.read("Enter computer command: ").strip().lower()
         if command == "rec":
-            status.display_galactic_record(game)
+            Stats.display_galactic_record(game)
         elif command == "sta":
-            status.display_status(game)
+            Stats.display_status(game)
         elif command == "tor":
-            calculator.photon_torpedo_calculator(game)
+            Calc.photon_torpedo_calculator(game)
         elif command == "bas":
-            calculator.starbase_calculator(game)
+            Calc.starbase_calculator(game)
         elif command == "nav":
-            calculator.navigation_calculator(game)
+            Calc.navigation_calculator(game)
         else:
             game.display()
             game.display("Invalid computer command.")
@@ -59,7 +58,7 @@ class control(object):
             if game.enterprise.energy < 0:
                 game.enterprise.energy = 0
                 break
-            dist = calculator.distance(game.sector_x, game.sector_y, ship.sector_x, ship.sector_y)
+            dist = Calc.distance(game.sector_x, game.sector_y, ship.sector_x, ship.sector_y)
             delivered_energy = phaser_energy * (1.0 - dist / 11.3)
             ship.shield_level -= int(delivered_energy)
             if ship.shield_level <= 0:
@@ -72,7 +71,7 @@ class control(object):
         for ship in destroyed_ships:
             game.quadrants[game.quadrant_y][game.quadrant_x].klingons -= 1
             game.klingons -= 1
-            game.sector[ship.sector_y][ship.sector_x] = game.sector_type.empty
+            game.sector[ship.sector_y][ship.sector_x] = Glyphs.SPACE
             game.klingon_ships.remove(ship)
         if len(game.klingon_ships) > 0:
             game.display()
@@ -156,7 +155,7 @@ class control(object):
             for ship in game.klingon_ships:
                 if ship.sector_x == new_x and ship.sector_y == new_y:
                     game.display("Klingon ship destroyed at sector [{0},{1}].".format(ship.sector_x + 1, ship.sector_y + 1))
-                    game.sector[ship.sector_y][ship.sector_x] = game.sector_type.empty
+                    game.sector[ship.sector_y][ship.sector_x] = Glyphs.SPACE
                     game.klingons -= 1
                     game.klingon_ships.remove(ship)
                     game.quadrants[game.quadrant_y][game.quadrant_x].klingons -= 1
@@ -164,14 +163,14 @@ class control(object):
                     break  # break out of the for loop
             if hit:
                 break  # break out of the while loop
-            if game.sector[new_y][new_x] == game.sector_type.starbase:
+            if game.sector[new_y][new_x] == Glyphs.STARBASE:
                 game.starbases -= 1
                 game.quadrants[game.quadrant_y][game.quadrant_x].starbase = False
-                game.sector[new_y][new_x] = game.sector_type.empty
+                game.sector[new_y][new_x] = Glyphs.SPACE
                 game.display("The Enterprise destroyed a Federation starbase at sector [{0},{1}]!".format(new_x + 1, new_y + 1))
                 hit = True
                 break
-            elif game.sector[new_y][new_x] == game.sector_type.star:
+            elif game.sector[new_y][new_x] == Glyphs.STAR:
                 game.display("The torpedo was captured by a star's gravitational field at sector [{0},{1}].".format(
                     new_x + 1, new_y + 1
                 ))

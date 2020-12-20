@@ -1,26 +1,31 @@
 import random
 import TrekStrings
 
-from Aliens import KlingonShip
+import Glyphs
+from AbsShip import KlingonShip
 
 
 class Quadrant():
 
-    def __init__(game):
-        game.name = ""
-        game.klingons = 0
-        game.stars = 0
-        game.starbase = False
-        game.scanned = False
+    def __init__(self):
+        self.name = ""
+        self.klingons = 0
+        self.stars = 0
+        self.starbase = False
+        self.scanned = False
 
 
 class SectorType():
 
-    def __init__(game):
-        game.empty, game.star, game.klingon, game.enterprise, game.starbase = 1, 2, 3, 4, 5
+    def __init__(self):
+        self.empty, self.star, self.klingon, \
+        self.enterprise, self.starbase = \
+        Glyphs.SPACE, Glyphs.STAR, Glyphs.KLINGON, \
+        Glyphs.ENTERPRISE, Glyphs.STARBASE
 
 
-class Map(object):
+
+class Sectors(object):
 
     @staticmethod
     def initialize_game(game):
@@ -72,22 +77,22 @@ class Map(object):
         game.klingon_ships = []
         for i in range(8):
             for j in range(8):
-                game.sector[i][j] = game.sector_type.empty
-        game.sector[game.sector_y][game.sector_x] = game.sector_type.enterprise
+                game.sector[i][j] = Glyphs.SPACE
+        game.sector[game.sector_y][game.sector_x] = Glyphs.ENTERPRISE
         while starbase or stars > 0 or klingons > 0:
             i = random.randint(0, 7)
             j = random.randint(0, 7)
-            if Map.is_sector_region_empty(game, i, j):
+            if Sectors.is_sector_region_empty(game, i, j):
                 if starbase:
                     starbase = False
-                    game.sector[i][j] = game.sector_type.starbase
+                    game.sector[i][j] = Glyphs.STARBASE
                     game.starbase_y = i
                     game.starbase_x = j
                 elif stars > 0:
-                    game.sector[i][j] = game.sector_type.star
+                    game.sector[i][j] = Glyphs.STAR
                     stars -= 1
                 elif klingons > 0:
-                    game.sector[i][j] = game.sector_type.klingon
+                    game.sector[i][j] = Glyphs.KLINGON
                     klingon_ship = KlingonShip()
                     klingon_ship.shield_level = 300 + random.randint(0, 199)
                     klingon_ship.sector_y = i
@@ -98,18 +103,18 @@ class Map(object):
     @staticmethod                
     def is_sector_region_empty(game, i, j):
         for y in range(i - 1, i+1):  # i + 1?
-            if Map.read_sector(game, y, j - 1) != \
-                game.sector_type.empty and \
-                Map.read_sector(game, y, j + 1) != \
-                game.sector_type.empty:
+            if Sectors.read_sector(game, y, j - 1) != \
+                Glyphs.SPACE and \
+                Sectors.read_sector(game, y, j + 1) != \
+                Glyphs.SPACE:
                 return False
-        return Map.read_sector(game, i, j) == game.sector_type.empty
+        return Sectors.read_sector(game, i, j) == Glyphs.SPACE
 
 
     @staticmethod                
     def read_sector(game, i, j):
         if i < 0 or j < 0 or i > 7 or j > 7:
-            return game.sector_type.empty
+            return Glyphs.SPACE
         return game.sector[i][j]
 
 
@@ -117,7 +122,7 @@ class Map(object):
     def is_docking_location(game, i, j):
         for y in range(i - 1, i+1):  # i + 1?
             for x in range(j - 1, j+1):  # j + 1?
-                if Map.read_sector(game, y, x) == game.sector_type.starbase:
+                if Sectors.read_sector(game, y, x) == Glyphs.STARBASE:
                     return True
         return False
 
@@ -130,18 +135,21 @@ class Map(object):
         elif game.enterprise.energy < 300:
             game.enterprise.condition = "YELLOW"
 
-        sb = ""
-        game.display("-=--=--=--=--=--=--=--=-          Region: {0}".format(quadrant.name))
-        Map.print_sector_row(game, sb, 0, "           Quadrant: [{0},{1}]".format(
-            game.quadrant_x + 1, game.quadrant_y + 1))
-        Map.print_sector_row(game, sb, 1, "             Sector: [{0},{1}]".format(game.sector_x + 1, game.sector_y + 1))
-        Map.print_sector_row(game, sb, 2, "           Stardate: {0}".format(game.star_date))
-        Map.print_sector_row(game, sb, 3, "     Time remaining: {0}".format(game.time_remaining))
-        Map.print_sector_row(game, sb, 4, "          Condition: {0}".format(game.enterprise.condition))
-        Map.print_sector_row(game, sb, 5, "             Energy: {0}".format(game.enterprise.energy))
-        Map.print_sector_row(game, sb, 6, "            Shields: {0}".format(game.enterprise.shield_level))
-        Map.print_sector_row(game, sb, 7, "   Photon Torpedoes: {0}".format(game.photon_torpedoes))
-        game.display("-=--=--=--=--=--=--=--=-             Docked: {0}".format(game.enterprise.docked))
+        sb =   "     a  b  c  d  e  f  g  h \n"
+        sb += f"    -=--=--=--=--=--=--=--=-             Region: {quadrant.name}\n"
+        info = list()
+        info.append(f"           Quadrant: [{game.quadrant_x + 1}, {game.quadrant_y + 1}\n")
+        info.append(f"             Sector: [{game.sector_x + 1}, {game.sector_y + 1}\n")
+        info.append(f"           Stardate: {game.star_date}\n")
+        info.append(f"     Time remaining: {game.time_remaining}\n")
+        info.append(f"          Condition: {game.enterprise.condition}\n")
+        info.append(f"             Energy: {game.enterprise.energy}\n")
+        info.append(f"            Shields: {game.enterprise.shield_level}\n")
+        info.append(f"   Photon Torpedoes: {game.photon_torpedoes}\n")
+        for ss in range(8):
+            sb = Sectors._get_row(game, sb, ss, info[ss])
+        sb += "    -=--=--=--=--=--=--=--=-             Docked: {game.enterprise.docked}\n"
+        print(sb, end='')
 
         if quadrant.klingons > 0:
             game.display()
@@ -155,20 +163,21 @@ class Map(object):
 
 
     @staticmethod                
-    def print_sector_row(game, sb, row, suffix):
+    def _get_row(game, sb, row, suffix):
+        sb += f" {row} |"
         for column in range(8):
-            if game.sector[row][column] == game.sector_type.empty:
-                sb += "   "
-            elif game.sector[row][column] == game.sector_type.enterprise:
-                sb += "<E>"
-            elif game.sector[row][column] == game.sector_type.klingon:
-                sb += "+K+"
-            elif game.sector[row][column] == game.sector_type.star:
-                sb += " * "
-            elif game.sector[row][column] == game.sector_type.starbase:
-                sb += ">S<"
+            if game.sector[row][column] == Glyphs.SPACE:
+                sb += Glyphs.SPACE
+            elif game.sector[row][column] == Glyphs.ENTERPRISE:
+                sb += Glyphs.ENTERPRISE
+            elif game.sector[row][column] == Glyphs.KLINGON:
+                sb += Glyphs.KLINGON
+            elif game.sector[row][column] == Glyphs.STAR:
+                sb += Glyphs.STAR
+            elif game.sector[row][column] == Glyphs.STARBASE:
+                sb += Glyphs.STARBASE
         if suffix is not None:
             sb = sb + suffix
-        game.display(sb)
+        return sb
 
 

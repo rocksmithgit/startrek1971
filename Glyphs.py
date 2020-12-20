@@ -1,0 +1,5 @@
+SPACE       = "   "
+STAR        = " * "
+STARBASE    = ">S<"
+ENTERPRISE  = "<E>"
+KLINGON     = "+K+"

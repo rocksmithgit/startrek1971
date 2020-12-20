@@ -33,7 +33,7 @@ class abs_display(abc.ABC):
         self.display()
 
 
-class console(abs_display):
+class Con(abs_display):
     '''
     The best place to start is by encapsulating the default
     display. Will add screen metadata for it all, later.
@@ -60,7 +60,7 @@ class console(abs_display):
 
 
 if __name__ == '__main__':
-    con = console()
+    con = Con()
     con.display("Testing!")
 
 

@@ -1,5 +1,5 @@
 
-class status(object):
+class Stats(object):
 
     @staticmethod
     def display_status(game):
