@@ -2,8 +2,8 @@ from math import pi, sqrt, cos, sin
 import random
 
 import TrekStrings
-from Assets import ship
-from Aliens import attack
+from Assets import Enterprise
+from Aliens import KlingonShip
 from Calculators import calculator
 from Reports import status
 
@@ -12,7 +12,7 @@ class control(object):
 
     @staticmethod
     def computer_controls(game):
-        if game.computer_damage > 0:
+        if game.enterprise.computer_damage > 0:
             game.display("The main computer is damaged. Repairs are underway.")
             game.display()
             return
@@ -32,12 +32,12 @@ class control(object):
             game.display()
             game.display("Invalid computer command.")
             game.display()
-        ship.induce_damage(game, 4)
+        game.enterprise.damage(game, 4)
 
 
     @staticmethod
     def phaser_controls(game):
-        if game.phaser_damage > 0:
+        if game.enterprise.phaser_damage > 0:
             game.display("Phasers are damaged. Repairs are underway.")
             game.display()
             return
@@ -46,8 +46,8 @@ class control(object):
             game.display()
             return
         game.display("Phasers locked on target.")
-        phaser_energy = game.read_double("Enter phaser energy (1--{0}): ".format(game.energy))
-        if not phaser_energy or phaser_energy < 1 or phaser_energy > game.energy:
+        phaser_energy = game.read_double("Enter phaser energy (1--{0}): ".format(game.enterprise.energy))
+        if not phaser_energy or phaser_energy < 1 or phaser_energy > game.enterprise.energy:
             game.display("Invalid energy level.")
             game.display()
             return
@@ -55,9 +55,9 @@ class control(object):
         game.display("Firing phasers...")
         destroyed_ships = []
         for ship in game.klingon_ships:
-            game.energy -= int(phaser_energy)
-            if game.energy < 0:
-                game.energy = 0
+            game.enterprise.energy -= int(phaser_energy)
+            if game.enterprise.energy < 0:
+                game.enterprise.energy = 0
                 break
             dist = calculator.distance(game.sector_x, game.sector_y, ship.sector_x, ship.sector_y)
             delivered_energy = phaser_energy * (1.0 - dist / 11.3)
@@ -76,7 +76,7 @@ class control(object):
             game.klingon_ships.remove(ship)
         if len(game.klingon_ships) > 0:
             game.display()
-            attack.klingons_attack(game)
+            KlingonShip.attack(game)
         game.display()
 
 
@@ -89,10 +89,10 @@ class control(object):
         game.display()
         if command == "add":
             adding = True
-            max_transfer = game.energy
+            max_transfer = game.enterprise.energy
         elif command == "sub":
             adding = False
-            max_transfer = game.shield_level
+            max_transfer = game.enterprise.shield_level
         else:
             game.display("Invalid command.")
             game.display()
@@ -105,17 +105,17 @@ class control(object):
             return
         game.display()
         if adding:
-            game.energy -= int(transfer)
-            game.shield_level += int(transfer)
+            game.enterprise.energy -= int(transfer)
+            game.enterprise.shield_level += int(transfer)
         else:
-            game.energy += int(transfer)
-            game.shield_level -= int(transfer)
-        game.display("Shield strength is now {0}. Energy level is now {1}.".format(game.shield_level, game.energy))
+            game.enterprise.energy += int(transfer)
+            game.enterprise.shield_level -= int(transfer)
+        game.display("Shield strength is now {0}. Energy level is now {1}.".format(game.enterprise.shield_level, game.enterprise.energy))
         game.display()
 
 
     def torpedo_control(game):
-        if game.photon_damage > 0:
+        if game.enterprise.photon_damage > 0:
             game.display("Photon torpedo control is damaged. Repairs are underway.")
             game.display()
             return
@@ -183,7 +183,7 @@ class control(object):
             game.display("Photon torpedo failed to hit anything.")
         if len(game.klingon_ships) > 0:
             game.display()
-            attack.klingons_attack(game)
+            KlingonShip.attack(game)
         game.display()
 
 

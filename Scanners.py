@@ -1,19 +1,21 @@
+from Map import *
+
 class scanner(object):
 
     @staticmethod
     def short_range_scan(game):
-        if game.short_range_scan_damage > 0:
+        if game.enterprise.short_range_scan_damage > 0:
             game.display("Short range scanner is damaged. Repairs are underway.")
             game.display()
         else:
             quadrant = game.quadrants[game.quadrant_y][game.quadrant_x]
             quadrant.scanned = True
-            game.print_sector(quadrant)
+            Map.print_sector(game, quadrant)
         game.display()
 
     @staticmethod
     def long_range_scan(game):
-        if game.long_range_scan_damage > 0:
+        if game.enterprise.long_range_scan_damage > 0:
             game.display("Long range scanner is damaged. Repairs are underway.")
             game.display()
             return

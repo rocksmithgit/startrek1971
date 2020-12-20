@@ -1,9 +1,10 @@
 from math import atan2, pi, sqrt, cos, sin
 import random
 
+from Map import *
 from Scanners import scanner
-from Assets import ship
-from Aliens import attack
+from Assets import Enterprise
+from Aliens import KlingonShip
 
 class calculator(object):
 
@@ -16,7 +17,7 @@ class calculator(object):
     @staticmethod
     def navigation(game):
         max_warp_factor = 8.0
-        if game.navigation_damage > 0:
+        if game.enterprise.navigation_damage > 0:
             max_warp_factor = 0.2 + random.randint(0, 8) / 10.0
             game.display("Warp engines damaged. Maximum warp factor: {0}".format(max_warp_factor))
             game.display()
@@ -38,14 +39,14 @@ class calculator(object):
 
         dist *= 8
         energy_required = int(dist)
-        if energy_required >= game.energy:
+        if energy_required >= game.enterprise.energy:
             game.display("Unable to comply. Insufficient energy to travel that speed.")
             game.display()
             return
         else:
             game.display("Warp engines engaged.")
             game.display()
-            game.energy -= energy_required
+            game.enterprise.energy -= energy_required
 
         last_quad_x = game.quadrant_x
         last_quad_y = game.quadrant_y
@@ -96,25 +97,25 @@ class calculator(object):
             if quad_x != game.quadrant_x or quad_y != game.quadrant_y:
                 game.quadrant_x = int(quad_x)
                 game.quadrant_y = int(quad_y)
-                game.generate_sector()
+                Map.generate_sector(game)
             else:
                 game.quadrant_x = int(quad_x)
                 game.quadrant_y = int(quad_y)
                 game.sector[game.sector_y][game.sector_x] = game.sector_type.enterprise
-        if game.is_docking_location(game.sector_y, game.sector_x):
-            game.energy = 3000
+        if Map.is_docking_location(game, game.sector_y, game.sector_x):
+            game.enterprise.energy = 3000
             game.photon_torpedoes = 10
-            game.navigation_damage = 0
-            game.short_range_scan_damage = 0
-            game.long_range_scan_damage = 0
-            game.shield_control_damage = 0
-            game.computer_damage = 0
-            game.photon_damage = 0
-            game.phaser_damage = 0
-            game.shield_level = 0
-            game.docked = True
+            game.enterprise.navigation_damage = 0
+            game.enterprise.short_range_scan_damage = 0
+            game.enterprise.long_range_scan_damage = 0
+            game.enterprise.shield_control_damage = 0
+            game.enterprise.computer_damage = 0
+            game.enterprise.photon_damage = 0
+            game.enterprise.phaser_damage = 0
+            game.enterprise.shield_level = 0
+            game.enterprise.docked = True
         else:
-            game.docked = False
+            game.enterprise.docked = False
 
         if last_quad_x != game.quadrant_x or last_quad_y != game.quadrant_y:
             game.time_remaining -= 1
@@ -122,17 +123,17 @@ class calculator(object):
 
         scanner.short_range_scan(game)
 
-        if game.docked:
+        if game.enterprise.docked:
             game.display("Lowering shields as part of docking sequence...")
             game.display("Enterprise successfully docked with starbase.")
             game.display()
         else:
             if game.quadrants[game.quadrant_y][game.quadrant_x].klingons > 0 \
                     and last_quad_x == game.quadrant_x and last_quad_y == game.quadrant_y:
-                attack.klingons_attack(game)
+                KlingonShip.attack(game)
                 game.display()
-            elif not ship.repair_damage(game):
-                ship.induce_damage(game, -1)
+            elif not game.enterprise.repair(game):
+                game.enterprise.damage(game, -1)
 
 
     @staticmethod

@@ -7,13 +7,13 @@ class status(object):
         game.display("               Time Remaining: {0}".format(game.time_remaining))
         game.display("      Klingon Ships Remaining: {0}".format(game.klingons))
         game.display("                    Starbases: {0}".format(game.starbases))
-        game.display("           Warp Engine Damage: {0}".format(game.navigation_damage))
-        game.display("   Short Range Scanner Damage: {0}".format(game.short_range_scan_damage))
-        game.display("    Long Range Scanner Damage: {0}".format(game.long_range_scan_damage))
-        game.display("       Shield Controls Damage: {0}".format(game.shield_control_damage))
-        game.display("         Main Computer Damage: {0}".format(game.computer_damage))
-        game.display("Photon Torpedo Control Damage: {0}".format(game.photon_damage))
-        game.display("                Phaser Damage: {0}".format(game.phaser_damage))
+        game.display("           Warp Engine Damage: {0}".format(game.enterprise.navigation_damage))
+        game.display("   Short Range Scanner Damage: {0}".format(game.enterprise.short_range_scan_damage))
+        game.display("    Long Range Scanner Damage: {0}".format(game.enterprise.long_range_scan_damage))
+        game.display("       Shield Controls Damage: {0}".format(game.enterprise.shield_control_damage))
+        game.display("         Main Computer Damage: {0}".format(game.enterprise.computer_damage))
+        game.display("Photon Torpedo Control Damage: {0}".format(game.enterprise.photon_damage))
+        game.display("                Phaser Damage: {0}".format(game.enterprise.phaser_damage))
         game.display()
 
 
@@ -47,7 +47,7 @@ class status(object):
         if game.destroyed:
             game.display("MISSION FAILED: ENTERPRISE DESTROYED!!!")
             game.display('\n'*2)
-        elif game.energy == 0:
+        elif game.enterprise.energy == 0:
             game.display("MISSION FAILED: ENTERPRISE RAN OUT OF ENERGY.")
             game.display('\n'*2)
         elif game.klingons == 0:
