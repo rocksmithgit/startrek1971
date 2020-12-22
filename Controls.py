@@ -5,14 +5,14 @@ import TrekStrings
 from AbsShip import *
 from Calculators import Calc
 from Reports import Stats
+from Quips import Quips
 
-
-class control(object):
+class Control():
 
     @staticmethod
     def computer_controls(game):
         if game.enterprise.computer_damage > 0:
-            game.display("The main computer is damaged. Repairs are underway.")
+            game.display(Quips.jibe_damage('computer'))
             game.display()
             return
         game.print_strings(TrekStrings.computerStrings)
@@ -24,7 +24,7 @@ class control(object):
         elif command == "tor":
             Calc.photon_torpedo_calculator(game)
         elif command == "bas":
-            Calc.starbase_calculator(game)
+            Calc.starbase_inventory(game)
         elif command == "nav":
             Calc.navigation_calculator(game)
         else:
@@ -37,10 +37,11 @@ class control(object):
     @staticmethod
     def phaser_controls(game):
         if game.enterprise.phaser_damage > 0:
-            game.display("Phasers are damaged. Repairs are underway.")
+            game.display(Quips.jibe_damage("phasers"))
             game.display()
             return
-        if len(game.klingon_ships) == 0:
+        kships = game.game_map.get_area_klingons()
+        if len(kships) == 0:
             game.display("There are no Klingon ships in this quadrant.")
             game.display()
             return
@@ -53,27 +54,26 @@ class control(object):
         game.display()
         game.display("Firing phasers...")
         destroyed_ships = []
-        for ship in game.klingon_ships:
+        for ss, ship in enumerate(kships):
             game.enterprise.energy -= int(phaser_energy)
             if game.enterprise.energy < 0:
                 game.enterprise.energy = 0
                 break
-            dist = Calc.distance(game.sector_x, game.sector_y, ship.sector_x, ship.sector_y)
+            dist = Calc.distance(game.game_map.xpos, 
+                                 game.game_map.ypos, 
+                                 ship.xpos, ship.ypos)
             delivered_energy = phaser_energy * (1.0 - dist / 11.3)
             ship.shield_level -= int(delivered_energy)
             if ship.shield_level <= 0:
-                game.display("Klingon ship destroyed at sector [{0},{1}].".format(ship.sector_x + 1, ship.sector_y + 1))
+                game.display(f"Enemy ship destroyed at [{ship.xpos + 1},{ship.ypos + 1}].")
+                game.display(Quips.jibe_defeat('enemy'))
                 destroyed_ships.append(ship)
             else:
-                game.display("Hit ship at sector [{0},{1}]. Klingon shield strength dropped to {2}.".format(
-                    ship.sector_x + 1, ship.sector_y + 1, ship.shield_level
-                ))
-        for ship in destroyed_ships:
-            game.quadrants[game.quadrant_y][game.quadrant_x].klingons -= 1
-            game.klingons -= 1
-            game.sector[ship.sector_y][ship.sector_x] = Glyphs.SPACE
-            game.klingon_ships.remove(ship)
-        if len(game.klingon_ships) > 0:
+                game.display(f"Hit ship at [{ship.xpos + 1},{ship.ypos + 1}].")
+                game.display(f"Enemy shield down to {ship.shield_level}.")
+        game.game_map.klingons -= len(destroyed_ships)
+        game.game_map.remove_items(destroyed_ships)
+        if game.game_map.klingons > 0:
             game.display()
             KlingonShip.attack(game)
         game.display()
@@ -115,77 +115,59 @@ class control(object):
 
     def torpedo_control(game):
         if game.enterprise.photon_damage > 0:
-            game.display("Photon torpedo control is damaged. Repairs are underway.")
+            game.display(Quips.jibe_damage('photon launcher'))
             game.display()
             return
-        if game.photon_torpedoes == 0:
+        if game.enterprise.photon_torpedoes == 0:
             game.display("Photon torpedoes exhausted.")
             game.display()
             return
-        if len(game.klingon_ships) == 0:
+        if len(game.game_map.get_area_klingons()) == 0:
             game.display("There are no Klingon ships in this quadrant.")
             game.display()
             return
-        direction = game.read_double("Enter firing direction (1.0--9.0): ")
-        if not direction or direction < 1.0 or direction > 9.0:
-            game.display("Invalid direction.")
+        shot = game.read_xypos()
+        if not shot:
+            game.display("Invalid shot.")
             game.display()
             return
         game.display()
         game.display("Photon torpedo fired...")
-        game.photon_torpedoes -= 1
-        angle = -(pi * (direction - 1.0) / 4.0)
-        if random.randint(0, 2) == 0:
-            angle += (1.0 - 2.0 * random.uniform(0.0, 1.0) * pi * 2.0) * 0.03
-        x = game.sector_x
-        y = game.sector_y
-        vx = cos(angle) / 20
-        vy = sin(angle) / 20
-        last_x = last_y = -1
-        # new_x = game.sector_x
-        # new_y = game.sector_y
+        game.enterprise.photon_torpedoes -= 1
         hit = False
-        while x >= 0 and y >= 0 and round(x) < 8 and round(y) < 8:
-            new_x = int(round(x))
-            new_y = int(round(y))
-            if last_x != new_x or last_y != new_y:
-                game.display("  [{0},{1}]".format(new_x + 1, new_y + 1))
-                last_x = new_x
-                last_y = new_y
-            for ship in game.klingon_ships:
-                if ship.sector_x == new_x and ship.sector_y == new_y:
-                    game.display("Klingon ship destroyed at sector [{0},{1}].".format(ship.sector_x + 1, ship.sector_y + 1))
-                    game.sector[ship.sector_y][ship.sector_x] = Glyphs.SPACE
-                    game.klingons -= 1
-                    game.klingon_ships.remove(ship)
-                    game.quadrants[game.quadrant_y][game.quadrant_x].klingons -= 1
+        for ship in game.game_map.get_area_objects():
+            if game.is_testing:
+                print(f'{ship.glyph}({ship.xpos},{ship.ypos}), shot({shot.xpos},{shot.ypos})')
+            if ship.xpos == shot.xpos and ship.ypos == shot.ypos:
+                if ship.glyph == Glyphs.KLINGON:
+                    num = game.game_map.game_id(ship)
+                    game.display(f"Klingon ship #{num} destroyed.")
+                    game.display(Quips.jibe_defeat('enemy'))
+                    game.game_map.klingons -= 1
+                    game.game_map.remove_items([ship])
                     hit = True
-                    break  # break out of the for loop
-            if hit:
-                break  # break out of the while loop
-            if game.sector[new_y][new_x] == Glyphs.STARBASE:
-                game.starbases -= 1
-                game.quadrants[game.quadrant_y][game.quadrant_x].starbase = False
-                game.sector[new_y][new_x] = Glyphs.SPACE
-                game.display("The Enterprise destroyed a Federation starbase at sector [{0},{1}]!".format(new_x + 1, new_y + 1))
-                hit = True
-                break
-            elif game.sector[new_y][new_x] == Glyphs.STAR:
-                game.display("The torpedo was captured by a star's gravitational field at sector [{0},{1}].".format(
-                    new_x + 1, new_y + 1
-                ))
-                hit = True
-                break
-            x += vx
-            y += vy
+                    break
+                elif ship.glyph == Glyphs.STARBASE:
+                    game.game_map.starbases -= 1
+                    num = game.game_map.game_id(ship)
+                    game.display("Federation Starbase #{num} destroyed!")
+                    game.display(Quips.jibe_defeat('commander'))
+                    game.game_map.remove_items([ship])
+                    hit = True
+                    break
+                elif ship.glyph == Glyphs.STAR:
+                    num = game.game_map.game_id(ship)
+                    game.display(f"Torpedo vaporizes star #{num}!")
+                    game.display(Quips.jibe_defeat('scientist'))
+                    game.game_map.remove_items([ship])
+                    hit = True
+                    break
         if not hit:
-            game.display("Photon torpedo failed to hit anything.")
-        if len(game.klingon_ships) > 0:
+            game.display("Torpedo missed.")
+        if len(game.game_map.get_area_klingons()) > 0:
             game.display()
             KlingonShip.attack(game)
         game.display()
-
-
 
 
 

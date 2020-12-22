@@ -112,7 +112,7 @@ computerStrings = [
     "--- Main Computer --------------",
     "rec = Cumulative Galatic Record",
     "sta = Status Report",
-    "tor = Photon Torpedo Calculator",
-    "bas = Starbase Calculator",
+    "tor = Photon Torpedo Targets",
+    "bas = Starbase Locations",
     "nav = Navigation Calculator",
     ]

@@ -32,37 +32,3 @@ class abs_display(abc.ABC):
             self.display(string)
         self.display()
 
-
-class Con(abs_display):
-    '''
-    The best place to start is by encapsulating the default
-    display. Will add screen metadata for it all, later.
-    '''
-    def __init__(self):
-        super().__init__(abs_display.ST_CONSOLE)
-
-    def display(self, message = ''):
-        print(message)
-
-    def read(self, prompt=''):
-        return input(prompt)
-
-    def read_double(self, prompt):
-        text = input(prompt)
-        try:
-            value = float(text)
-            return value
-        except:
-            pass
-        return False
-
-
-
-
-if __name__ == '__main__':
-    con = Con()
-    con.display("Testing!")
-
-
-
-

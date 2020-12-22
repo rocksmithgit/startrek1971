@@ -2,6 +2,7 @@ import abc
 import random
 
 import Glyphs
+from Quips import Quips
 
 class AbsShip(abc.ABC):
     ''' The first step, into a much larger universe ... '''
@@ -12,6 +13,32 @@ class AbsShip(abc.ABC):
     @abc.abstractmethod
     def get_glyph(self):
         pass
+
+class StarBase(AbsShip):
+
+    def __init__(self):
+        super().__init__()
+
+    def get_glyph(self):
+        return Glyphs.STARBASE
+
+    @staticmethod
+    def dock_enterprise(ship):
+        ship.energy = 3000
+        ship.photon_torpedoes = 10
+        ship.navigation_damage = 0
+        ship.short_range_scan_damage = 0
+        ship.long_range_scan_damage = 0
+        ship.shield_control_damage = 0
+        ship.computer_damage = 0
+        ship.photon_damage = 0
+        ship.phaser_damage = 0
+        ship.shield_level = 0
+        ship.docked = True
+
+    @staticmethod
+    def launch_enterprise(ship):
+        ship.docked = False
 
 
 class Enterprise(AbsShip):
@@ -28,13 +55,17 @@ class Enterprise(AbsShip):
         self.computer_damage = 0
         self.photon_damage = 0
         self.phaser_damage = 0
-
+        self.photon_torpedoes = 0
+        StarBase.dock_enterprise(self)
+        StarBase.launch_enterprise(self)
 
     def get_glyph(self):
         return Glyphs.ENTERPRISE
 
 
     def damage(self, game, item):
+        if game.is_testing:
+            return
         if random.randint(0, 6) > 0:
             return
         damage = 1 + random.randint(0, 4)
@@ -42,25 +73,25 @@ class Enterprise(AbsShip):
             item = random.randint(0, 6)
         if item == 0:
             self.navigation_damage = damage
-            game.display("Warp engines are malfunctioning.")
+            game.display(Quips.jibe_damage('Warp Engines'))
         elif item == 1:
             self.short_range_scan_damage = damage
-            game.display("Short range scanner is malfunctioning.")
+            game.display(Quips.jibe_damage('Short Range Scanners'))
         elif item == 2:
             self.long_range_scan_damage = damage
-            game.display("Long range scanner is malfunctioning.")
+            game.display(Quips.jibe_damage('Long Range Scanners'))
         elif item == 3:
             self.shield_control_damage = damage
-            game.display("Shield controls are malfunctioning.")
+            game.display(Quips.jibe_damage('Shield Controls'))
         elif item == 4:
             self.computer_damage = damage
-            game.display("The main computer is malfunctioning.")
+            game.display(Quips.jibe_damage('Main Computer'))
         elif item == 5:
             self.photon_damage = damage
-            game.display("Photon torpedo controls are malfunctioning.")
+            game.display(Quips.jibe_damage('Photon Torpedo Controls'))
         elif item == 6:
             self.phaser_damage = damage
-            game.display("Phasers are malfunctioning.")
+            game.display(Quips.jibe_damage('Phasers'))
         game.display()
 
 
@@ -111,39 +142,32 @@ class Enterprise(AbsShip):
 
 
     def short_range_scan(self, game):
-        from Charts import Sectors
+        from MapGame import Sectors
 
         if self.short_range_scan_damage > 0:
-            game.display("Short range scanner is damaged. Repairs are underway.")
+            game.display(Quips.jibe_damage('Short Ranged Scanners'))
             game.display()
         else:
-            quadrant = game.quadrants[game.quadrant_y][game.quadrant_x]
-            quadrant.scanned = True
-            Sectors.print_sector(game, quadrant)
+            quad = game.game_map.quad()
+            Sectors.print_sector(game, quad)
         game.display()
 
 
     def long_range_scan(self, game):
         if self.long_range_scan_damage > 0:
-            game.display("Long range scanner is damaged. Repairs are underway.")
+            game.display(Quips.jibe_damage('Long Ranged Scanners'))
             game.display()
             return
         sb = ""
         game.display("-------------------")
-        for i in range(game.quadrant_y - 1, game.quadrant_y+2):  # quadrantY + 1 ?
-            for j in range(game.quadrant_x - 1, game.quadrant_x+2):  # quadrantX + 1?
-                sb += "| "
-                klingon_count = 0
-                starbase_count = 0
-                star_count = 0
-                if 0 <= i < 8 and 0 <= j < 8:
-                    quadrant = game.quadrants[i][j]
-                    quadrant.scanned = True
-                    klingon_count = quadrant.klingons
-                    starbase_count = 1 if quadrant.starbase else 0
-                    star_count = quadrant.stars
-                sb = sb + \
-                    "{0}{1}{2} ".format(klingon_count, starbase_count, star_count)
+        pw_sector = game.game_map.sector
+        if pw_sector < 5:
+            pw_sector = 5
+        elif pw_sector > 59:
+            pw_sector = 59
+        for peek in range(pw_sector-5, pw_sector + 6):
+            quad = game.game_map.scan_quad(peek)
+            f"{quad.klingons}{quad.starbases}{quad.stars} "
             sb += "|"
             game.display(sb)
             sb = ""
@@ -155,26 +179,32 @@ class KlingonShip(AbsShip):
 
     def __init__(self):
         super().__init__()
-        self.sector_x = 0
-        self.sector_y = 0
+        self.xpos = 0
+        self.ypos = 0
+        self.shield_level = 0
 
 
     def get_glyph(self):
         return Glyphs.KLINGON
 
+    def from_map(self, xpos, ypos):
+        self.xpos = xpos
+        self.ypos = ypos
+        self.shield_level = 300 + random.randint(0, 199)
 
     @staticmethod
     def attack(game):
-        from Calculators import calculator
-        if len(game.klingon_ships) > 0:
-            for ship in game.klingon_ships:
+        from Calculators import Calc
+        kships = game.game_map.get_area_klingons()
+        if len(kships) > 0:
+            for ship in kships:
                 if game.enterprise.docked:
                     game.display("Enterprise hit by ship at sector [{0},{1}]. No damage due to starbase shields.".format(
-                        ship.sector_x + 1, ship.sector_y + 1
+                        ship.xpos + 1, ship.ypos + 1
                     ))
                 else:
-                    dist = calculator.distance(
-                        game.sector_x, game.sector_y, ship.sector_x, ship.sector_y)
+                    dist = Calc.distance(
+                        game.game_map.xpos, game.game_map.ypos, ship.xpos, ship.ypos)
                     delivered_energy = 300 * \
                         random.uniform(0.0, 1.0) * (1.0 - dist / 11.3)
                     game.enterprise.shield_level -= int(delivered_energy)
@@ -182,7 +212,7 @@ class KlingonShip(AbsShip):
                         game.enterprise.shield_level = 0
                         game.destroyed = True
                     game.display("Enterprise hit by ship at sector [{0},{1}]. Shields dropped to {2}.".format(
-                        ship.sector_x + 1, ship.sector_y + 1, game.enterprise.shield_level
+                        ship.xpos + 1, ship.ypos + 1, game.enterprise.shield_level
                     ))
                     if game.enterprise.shield_level == 0:
                         return True

@@ -1,62 +1,55 @@
+import Glyphs
 
-class Stats(object):
+class Stats():
 
     @staticmethod
     def display_status(game):
         game.display()
-        game.display("               Time Remaining: {0}".format(game.time_remaining))
-        game.display("      Klingon Ships Remaining: {0}".format(game.klingons))
-        game.display("                    Starbases: {0}".format(game.starbases))
-        game.display("           Warp Engine Damage: {0}".format(game.enterprise.navigation_damage))
-        game.display("   Short Range Scanner Damage: {0}".format(game.enterprise.short_range_scan_damage))
-        game.display("    Long Range Scanner Damage: {0}".format(game.enterprise.long_range_scan_damage))
-        game.display("       Shield Controls Damage: {0}".format(game.enterprise.shield_control_damage))
-        game.display("         Main Computer Damage: {0}".format(game.enterprise.computer_damage))
-        game.display("Photon Torpedo Control Damage: {0}".format(game.enterprise.photon_damage))
-        game.display("                Phaser Damage: {0}".format(game.enterprise.phaser_damage))
+        game.display(f"               Time Remaining: {game.time_remaining}")
+        game.display(f"      Klingon Ships Remaining: {game.game_map.klingons}")
+        game.display(f"                    Starbases: {game.game_map.starbases}")
+        game.display(f"           Warp Engine Damage: {game.enterprise.navigation_damage}")
+        game.display(f"   Short Range Scanner Damage: {game.enterprise.short_range_scan_damage}")
+        game.display(f"    Long Range Scanner Damage: {game.enterprise.long_range_scan_damage}")
+        game.display(f"       Shield Controls Damage: {game.enterprise.shield_control_damage}")
+        game.display(f"         Main Computer Damage: {game.enterprise.computer_damage}")
+        game.display(f"Photon Torpedo Control Damage: {game.enterprise.photon_damage}")
+        game.display(f"                Phaser Damage: {game.enterprise.phaser_damage}")
         game.display()
 
 
     @staticmethod
     def display_galactic_record(game):
         game.display()
-        sb = ""
         game.display("-------------------------------------------------")
-        for i in range(8):
-            for j in range(8):
-                sb += "| "
-                klingon_count = 0
-                starbase_count = 0
-                star_count = 0
-                quadrant = game.quadrants[i][j]
-                if quadrant.scanned:
-                    klingon_count = quadrant.klingons
-                    starbase_count = 1 if quadrant.starbase else 0
-                    star_count = quadrant.stars
-                sb = sb + \
-                    "{0}{1}{2} ".format(klingon_count, starbase_count, star_count)
-            sb += "|"
-            game.display(sb)
-            sb = ""
-            game.display("-------------------------------------------------")
+        game.display(
+            f"{Glyphs.KLINGON}{game.game_map.klingons}|" +
+            f"{Glyphs.STARBASE}|{game.game_map.starbases}|" +
+            f"{Glyphs.STAR}{game.game_map.stars}")
+        game.display("-------------------------------------------------")
         game.display()
 
 
     @staticmethod
     def print_game_status(game):
         if game.destroyed:
-            game.display("MISSION FAILED: ENTERPRISE DESTROYED!!!")
-            game.display('\n'*2)
+            msg = "MISSION FAILED: ENTERPRISE DESTROYED!!!"
+            game.display('!' * len(msg))
+            game.display(msg)
+            game.display('!' * len(msg))
         elif game.enterprise.energy == 0:
-            game.display("MISSION FAILED: ENTERPRISE RAN OUT OF ENERGY.")
-            game.display('\n'*2)
-        elif game.klingons == 0:
-            game.display("MISSION ACCOMPLISHED: ALL KLINGON SHIPS DESTROYED. WELL DONE!!!")
-            game.display('\n'*2)
+            msg = "MISSION FAILED: ENTERPRISE RAN OUT OF ENERGY."
+            game.display('!' * len(msg))
+            game.display(msg)
+            game.display('!' * len(msg))
+        elif game.game_map.klingons == 0:
+            msg = "MISSION ACCOMPLISHED: ALL ENEMY SHIPS DESTROYED. WELL DONE!!!"
+            game.display('!' * len(msg))
+            game.display(msg)
+            game.display('!' * len(msg))
         elif game.time_remaining == 0:
-            game.display("MISSION FAILED: ENTERPRISE RAN OUT OF TIME.")
-            game.display('\n'*2)
-
-
-
+            msg = "MISSION FAILED: ENTERPRISE RAN OUT OF TIME."
+            game.display('!' * len(msg))
+            game.display(msg)
+            game.display('!' * len(msg))
 
