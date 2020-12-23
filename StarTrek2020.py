@@ -1,5 +1,4 @@
-﻿from math import pi, sqrt, cos, sin
-import random
+﻿import random
 
 import TrekStrings
 
@@ -17,7 +16,7 @@ class Game(Con):
     def __init__(self):
         self.is_testing = False
         self.game_map = GameMap()
-        self.enterprise = Enterprise()
+        self.enterprise = ShipEnterprise()
         self.star_date = 0
         self.time_remaining = 0
         self.destroyed = False
@@ -27,7 +26,7 @@ class Game(Con):
         game.star_date = random.randint(0, 50) + 2250
         game.time_remaining = 40 + random.randint(0, 9)
         game.destroyed = False
-        stars     = random.randrange(32, 64)
+        stars     = random.randrange(400, 600) # 4096 = ALL
         aliens    = random.randrange(12, 16)
         starbases = random.randrange(6, 8)
         game.game_map.randomize(starbases, stars, aliens)

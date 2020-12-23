@@ -1,8 +1,9 @@
 import Glyphs
 
 class Quadrant():
-    def __init__(self, num=-1, name='', lines=[], 
-                 aliens=-1, stars=-1, starbases=-1):
+    def __init__(self, num=-1, name='', 
+                 aliens=-1, stars=-1, 
+                 starbases=-1, lines=[]):
         self.name = name
         self.number = num
         self.lines = lines
@@ -21,10 +22,11 @@ class Quadrant():
         name = area.name
         num = area.number
         map = area.get_map()
-        return Quadrant(num, name, map, 
-                        area.get_data(Glyphs.KLINGON),
+        return Quadrant(num, name, 
+                        area.count_glyphs(Glyphs.KLINGON),
                         area.count_glyphs(Glyphs.STAR),
-                        area.count_glyphs(Glyphs.STARBASE))
+                        area.count_glyphs(Glyphs.STARBASE),
+                        map)
 
 
     @staticmethod                
@@ -39,7 +41,7 @@ class Quadrant():
         sb += f"    -=--=--=--=--=--=--=--=-           Quadrant: {quad.name}\n"
         info = list()
         info.append(f"               Area: [{quad.number}]\n")
-        info.append(f"           Hazzards: [{quad.stars + len(quad.klingons)}]\n")
+        info.append(f"           Hazzards: [{quad.stars + quad.klingons}]\n")
         info.append(f"           Stardate: {game.star_date}\n")
         info.append(f"          Condition: {game.enterprise.condition}\n")
         info.append(f"             Energy: {game.enterprise.energy}\n")
@@ -54,7 +56,7 @@ class Quadrant():
         sb += f"    -=--=--=--=--=--=--=--=-             Docked: {game.enterprise.docked}\n"
         print(sb, end='')
 
-        if len(quad.klingons) > 0:
+        if quad.klingons > 0:
             game.display()
             game.display("Condition RED: Klingon ship{0} detected.".format("" if quad.klingons == 1 else "s"))
             if game.enterprise.shield_level == 0 and not game.enterprise.docked:

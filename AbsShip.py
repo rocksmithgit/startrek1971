@@ -3,6 +3,7 @@ import random
 
 import Glyphs
 from Quips import Quips
+from Quadrant import Quadrant
 
 class AbsShip(abc.ABC):
     ''' The first step, into a much larger universe ... '''
@@ -14,7 +15,7 @@ class AbsShip(abc.ABC):
     def get_glyph(self):
         pass
 
-class StarBase(AbsShip):
+class ShipStarbase(AbsShip):
 
     def __init__(self):
         super().__init__()
@@ -41,7 +42,7 @@ class StarBase(AbsShip):
         ship.docked = False
 
 
-class Enterprise(AbsShip):
+class ShipEnterprise(AbsShip):
 
     def __init__(self):
         super().__init__()
@@ -56,14 +57,16 @@ class Enterprise(AbsShip):
         self.photon_damage = 0
         self.phaser_damage = 0
         self.photon_torpedoes = 0
-        StarBase.dock_enterprise(self)
-        StarBase.launch_enterprise(self)
+        ShipStarbase.dock_enterprise(self)
+        ShipStarbase.launch_enterprise(self)
 
     def get_glyph(self):
         return Glyphs.ENTERPRISE
 
-
     def damage(self, game, item):
+        '''
+        Damage the Enterprise.
+        '''
         if game.is_testing:
             return
         if random.randint(0, 6) > 0:
@@ -94,8 +97,10 @@ class Enterprise(AbsShip):
             game.display(Quips.jibe_damage('Phasers'))
         game.display()
 
-
     def repair(self, game):
+        '''
+        Rapair damage to the Enterprise.
+        '''
         if self.navigation_damage > 0:
             self.navigation_damage -= 1
             if self.navigation_damage == 0:
@@ -140,9 +145,7 @@ class Enterprise(AbsShip):
             return True
         return False
 
-
     def short_range_scan(self, game):
-
         if self.short_range_scan_damage > 0:
             game.display(Quips.jibe_damage('Short Ranged Scanners'))
             game.display()
@@ -151,37 +154,42 @@ class Enterprise(AbsShip):
             Quadrant.display_area(game, quad)
         game.display()
 
-
     def long_range_scan(self, game):
         if self.long_range_scan_damage > 0:
             game.display(Quips.jibe_damage('Long Ranged Scanners'))
             game.display()
             return
         sb = ""
-        game.display("-------------------")
         pw_sector = game.game_map.sector
         if pw_sector < 5:
             pw_sector = 5
         elif pw_sector > 59:
             pw_sector = 59
+        dots = None
         for peek in range(pw_sector-5, pw_sector + 6):
             quad = game.game_map.scan_quad(peek)
-            f"{quad.klingons}{quad.starbases}{quad.stars} "
-            sb += "|"
+            lines = \
+                (f"Sector: {quad.number:>02}",
+                f"Enemies:{quad.klingons:>02}",
+                f"Bases:{quad.starbases:>02}",
+                f"Stars: {quad.stars:>03}")
+            str_ = ' | '.join(lines)
+            dots = '-' * len(str_) + "\n"
+            sb += dots
+            sb += str_
             game.display(sb)
             sb = ""
-            game.display("-------------------")
+        game.display(dots)
         game.display()
 
 
-class KlingonShip(AbsShip):
+class ShipKlingon(AbsShip):
 
     def __init__(self):
         super().__init__()
         self.xpos = 0
         self.ypos = 0
         self.shield_level = 0
-
 
     def get_glyph(self):
         return Glyphs.KLINGON

@@ -2,7 +2,7 @@ import random
 import TrekStrings
 
 import Glyphs
-from AbsShip import KlingonShip
+from AbsShip import ShipKlingon
 from Points import Destination
 from Quadrant import Quadrant
 
@@ -36,18 +36,22 @@ class GameMap(MapSparse.SparseMap):
                 continue
             taken = 0
             while taken != to_take:
-                for ss, area in enumerate(self.areas()):
-                    should_take = random.randrange(1, 8)
-                    if should_take % (ss + 2) == 0:
-                        if which is 0:
-                            area.place_glyph(Glyphs.STARBASE)
-                        elif which is 1:
-                            area.place_glyph(Glyphs.STAR)
-                        elif which is 2:
-                            area.place_glyph(Glyphs.KLINGON)
-                        taken += 1
-                        if taken == to_take:
-                            break;
+                ss = random.randrange(1, 64)
+                area = self.get_area(ss)
+                should_take = random.randrange(1, 8)
+                if which is 0:
+                    if area.count_glyphs(Glyphs.STARBASE) != 0:
+                        continue
+                    area.place_glyph(Glyphs.STARBASE)
+                elif which is 1:
+                    area.place_glyph(Glyphs.STAR)
+                elif which is 2:
+                    if area.count_glyphs(Glyphs.KLINGON) > 3:
+                        continue
+                    area.place_glyph(Glyphs.KLINGON)
+                taken += 1
+                if taken == to_take:
+                    break;
             takers[which] -= taken
         return tuple(takers)
 
@@ -107,10 +111,9 @@ class GameMap(MapSparse.SparseMap):
         Return a scan (LRS?) for a specific quadrant.
         Return empty quadrant, on error.
         '''
-        if sector > 0 and sector < 65:
-            for area in self.areas():
-                if area.number == self.sector:
-                    return Quadrant.from_area(area)
+        area = self.get_area(sector)
+        if area:
+            return Quadrant.from_area(area)
         return Quadrant()
 
     def _count(self, glyph):
@@ -141,7 +144,7 @@ class GameMap(MapSparse.SparseMap):
         results = []
         area = self.area()
         for data in area.get_data(Glyphs.KLINGON):
-            ship = KlingonShip()
+            ship = ShipKlingon()
             ship.from_map(data.xpos, data.ypos)
             results.append(ship)
         return results
@@ -222,7 +225,7 @@ class GameMap(MapSparse.SparseMap):
         self.init()
         takers = bases, stars, aliens
         while takers:
-            for lrs in self.map:
+            for lrs in self._map:
                 takers = self.place(takers)
                 if not takers:
                     break

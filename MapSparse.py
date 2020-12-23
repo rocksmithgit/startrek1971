@@ -67,7 +67,7 @@ class SparseMap:
 
         def get_map(self):
             ''' 
-            Generate a map of this sector. Map is full 
+            Generate a map of this AREA. Map is full 
             of Glyphs.SPACE on error.
             '''
             results = [[Glyphs.SPACE for _ in range(8)] for _ in range(8)]
@@ -142,31 +142,52 @@ class SparseMap:
 
     def __init__(self):
         self.initalized = False
-        self.map = [[[y,x] for y in range(8)] for x in range(8)]
+        self._map = [[[y,x] for y in range(8)] for x in range(8)]
 
     def init(self, reset=False):
         if not reset and self.initalized:
             return
-        for xx, row in enumerate(self.map):
+        for xx, row in enumerate(self._map):
             lrs = SparseMap.Region()
             for yy, col in enumerate(row):
-                self.map[xx][yy] = [lrs, SparseMap.Area()]
+                self._map[xx][yy] = [lrs, SparseMap.Area()]
         self.name_areas()
         self.initalized = True
 
+    def get_area(self, which):
+        '''
+        Get an AREA from the map. 
+        Area identifiers are 1's based.
+        Returns False on under / over flows.
+        '''
+        if which < 1:
+            return False
+        if which >= 65:
+            return False
+        which -= 1 # ASSURED
+        fid = which / 8
+        ypos = 0
+        xpos = int(fid)
+        if not fid.is_integer():
+            ypos = which %8
+        return self._map[xpos][ypos][1]
+
     def data(self):
         ''' Enumerate thru every [Region, Area] in the Map '''
-        for row in self.map:
+        for row in self._map:
             for col in row:
                 yield col
 
     def areas(self):
         ''' Enumerare thru every Area on the Map '''
-        for row in self.map:
+        for row in self._map:
             for col in row:
                 yield col[1]
 
     def name_areas(self):
+        '''
+        Assign / re-assign 'Trekian names.
+        '''
         names = list(TrekStrings.AREA_NAMES)
         for num, area in enumerate(self.areas(),1):
             index = random.randint(0, len(names) - 1)
@@ -175,6 +196,9 @@ class SparseMap:
             del names[index]
 
     def get_sector_names(self):
+        '''
+        Return a list of [secor numbers, sector_name] pairs.
+        '''
         results = []
         temp = []
         for ss, col in enumerate(self.areas(),1):

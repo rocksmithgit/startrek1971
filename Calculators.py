@@ -1,4 +1,4 @@
-from math import atan2, pi, sqrt, cos, sin
+from math import sqrt
 import random
 
 from MapGame import *
@@ -53,7 +53,7 @@ class Calc():
             game.display()
         else:
             if game.game_map.klingons > 0:
-                KlingonShip.attack(game)
+                ShipKlingon.attack(game)
                 game.display()
             elif not game.enterprise.repair(game):
                 game.enterprise.damage(game, -1)
