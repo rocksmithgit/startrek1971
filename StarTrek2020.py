@@ -32,6 +32,9 @@ class Game(Con):
         aliens    = random.randrange(12, 16)
         starbases = random.randrange(6, 8)
         game.game_map.randomize(starbases, stars, aliens)
+        dest = Destination(64, 5, 5)
+        game.game_map.go_to(dest)
+        game.game_map.get_area(64).name = 'Outer Limits'
         self.print_mission()
 
         self.show_strings(TrekStrings.HELM_CMDS)
@@ -47,8 +50,12 @@ class Game(Con):
     def command_prompt(self):
         command = self.read("Enter command: ").strip().lower()
         self.display()
-        if command == "nav":
-            Calc.navigation(game)
+        if command == "nav": # force of habbit?
+            Calc.warp_navigation(game)
+        if command == "wsn":
+            Calc.warp_navigation(game)
+        if command == "ssn":
+            Calc.sublight_navigation(game)
         elif command == "srs":
             game.enterprise.short_range_scan(game)
         elif command == "lrs":

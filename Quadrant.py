@@ -54,6 +54,7 @@ class Quadrant():
                 sb += col
             sb += info[row]
         sb += f"    -=--=--=--=--=--=--=--=-             Docked: {game.enterprise.docked}\n"
+        sb +=  "     a  b  c  d  e  f  g  h \n"
         print(sb, end='')
 
         if quad.klingons > 0:

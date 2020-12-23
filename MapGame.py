@@ -55,7 +55,7 @@ class GameMap(MapSparse.SparseMap):
             takers[which] -= taken
         return tuple(takers)
 
-    def enterprise_in(self, glyph, dest=None):
+    def enterprise_in(self, dest=None):
         ''' Place the ENTERPRISE at the destination, else a 
         random one. Return the x, y location - else False '''
         area = self.area()
@@ -209,10 +209,14 @@ class GameMap(MapSparse.SparseMap):
     def go_to(self, dest):
         if self.last_nav:
             self.enterprise_out()
-        assert(isinstance(self.sector, int))
-        self.sector = dest.sector
-        self.xpos = dest.xpos
-        self.ypos = dest.ypos
+        if dest.sector > 0:
+            self.sector = dest.sector
+        if dest.xpos != -1:
+            self.xpos = dest.xpos
+            self.ypos = dest.ypos
+        dest.sector = self.sector
+        dest.xpos = self.xpos
+        dest.ypos = self.ypos
         self.enterprise_in(dest)
         self.last_nav = dest
 

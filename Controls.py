@@ -75,7 +75,7 @@ class Control():
         game.game_map.remove_items(destroyed_ships)
         if game.game_map.klingons > 0:
             game.display()
-            ShipKlingon.attack(game)
+            ShipKlingon.attack_if_you_can(game)
         game.display()
 
 
@@ -165,7 +165,7 @@ class Control():
             game.display("Torpedo missed.")
         if len(game.game_map.get_area_klingons()) > 0:
             game.display()
-            ShipKlingon.attack(game)
+            ShipKlingon.attack_if_you_can(game)
         game.display()
 
 

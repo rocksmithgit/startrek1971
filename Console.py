@@ -43,6 +43,10 @@ class Con(abs_display):
         text = input(prompt + ': ')
         return Destination.parse_sector(text)
 
+    def read_xypos(self, prompt= "Helm: a-h, 1-8?"):
+        text = input(prompt + ': ')
+        return Destination.parse_xypos(text)
+
 
 if __name__ == '__main__':
     con = Con()

@@ -98,7 +98,8 @@ AREA_NAMES = [
 
 HELM_CMDS = [
     "--- Commands -----------------",
-    "nav = Navigation",
+    "wsn = Warp Speed Navigator",
+    "ssn = Sublight Speed Navigator",
     "srs = Short Range Scan",
     "lrs = Long Range Scan",
     "pha = Phaser Control",

@@ -13,12 +13,40 @@ class Calc():
         y = y2 - y1
         return sqrt(x * x + y * y)
 
+    @staticmethod
+    def sublight_navigation(game):
+        dest_sys = game.read_xypos()
+        if not dest_sys:
+            game.display("Invalid course.")
+            game.display()
+            return
+
+        game.display()
+        game.display("Sub-light engines engaged.")
+        game.display()
+        game.game_map.go_to(dest_sys)
+
+        game.time_remaining -= 1
+        game.star_date += 1
+
+        game.enterprise.short_range_scan(game)
+
+        if game.enterprise.docked:
+            game.display("Lowering shields as part of docking sequence...")
+            game.display("Enterprise successfully docked with starbase.")
+            game.display()
+        else:
+            if game.game_map.klingons > 0:
+                ShipKlingon.attack_if_you_can(game)
+                game.display()
+            elif not game.enterprise.repair(game):
+                game.enterprise.damage(game, -1)
 
     @staticmethod
-    def navigation(game):
+    def warp_navigation(game):
         if game.enterprise.navigation_damage > 0:
             max_warp_factor = 0.2 + random.randint(0, 8) / 10.0
-            game.display("Warp engines damaged. Maximum warp factor: {0}".format(max_warp_factor))
+            game.display(f"Warp engines damaged. Maximum warp factor: {max_warp_factor}")
             game.display()
 
         dest_sys = game.read_sector()
@@ -53,7 +81,7 @@ class Calc():
             game.display()
         else:
             if game.game_map.klingons > 0:
-                ShipKlingon.attack(game)
+                ShipKlingon.attack_if_you_can(game)
                 game.display()
             elif not game.enterprise.repair(game):
                 game.enterprise.damage(game, -1)

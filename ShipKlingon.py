@@ -18,7 +18,10 @@ class ShipKlingon(AbsShip):
         self.shield_level = 300 + random.randint(0, 199)
 
     @staticmethod
-    def attack(game):
+    def attack_if_you_can(game):
+        '''
+        IF you ever find yourself in the AREA, then have at USS?
+        '''
         if game.is_testing:
             return False
         from Calculators import Calc

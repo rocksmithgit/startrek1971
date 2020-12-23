@@ -3,6 +3,13 @@
 class Destination():
     ''' Zero based, Map navigation '''
     def __init__(self, sector=-1, xpos=-1, ypos=-1, warp=0):
+        if sector > 64: sector = 64 # zOuter Limits =)
+        if xpos > 7:  xpos = 7
+        if ypos > 7:  ypos = 7
+        if xpos < 0:  xpos = 0
+        if ypos < 0:  ypos = 0
+        if warp > 10: warp = 10
+        if warp < 0:  warp = 0
         self.warp = warp
         self.sector = sector
         self.xpos = xpos

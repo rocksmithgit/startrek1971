@@ -131,7 +131,7 @@ class SparseMap:
                         self.plot_glyph(xpos, ypos, glyph)
                         return xpos, ypos                    
             else:
-                self.plot_glyph(xpos, ypos, glyph)
+                self.plot_glyph(dest.xpos, dest.ypos, glyph)
             return dest.xpos, dest.ypos
 
         @staticmethod
