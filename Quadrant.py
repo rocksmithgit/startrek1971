@@ -36,7 +36,7 @@ class Quadrant():
             game.enterprise.condition = "YELLOW"
 
         sb =   "     a  b  c  d  e  f  g  h \n"
-        sb += f"    -=--=--=--=--=--=--=--=-             Region: {quad.name}\n"
+        sb += f"    -=--=--=--=--=--=--=--=-           Quadrant: {quad.name}\n"
         info = list()
         info.append(f"               Area: [{quad.number}]\n")
         info.append(f"           Hazzards: [{quad.stars + len(quad.klingons)}]\n")

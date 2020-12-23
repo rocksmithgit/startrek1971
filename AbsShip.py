@@ -142,7 +142,6 @@ class Enterprise(AbsShip):
 
 
     def short_range_scan(self, game):
-        from MapGame import Sectors
 
         if self.short_range_scan_damage > 0:
             game.display(Quips.jibe_damage('Short Ranged Scanners'))

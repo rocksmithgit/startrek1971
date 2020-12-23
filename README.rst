@@ -1,15 +1,17 @@
 So far:
 
-o Converted from Python 2, to Python 3. 
+* Converted from Python 2, to Python 3. 
 
-o Simplifying coordinate calculations - kudos for the idea!
+* Simplifying coordinate calculations - kudos for the idea!
 
-o Added random event Quips – should make the game a tad more ‘NPC’?
+* Added random event Quips – should make the game a tad more ‘NPC’?
 
-o Heavily re-factored for growth, testing, re-use, and maintenance using modern Python.
+* Heavily re-factored for growth, testing, re-use, and maintenance using modern Python.
 
 
 Original authors did an excellent job here - made the modernization a WHOLE LOT easier!
+
+:monocle_face:
 
 -- Nagy
 

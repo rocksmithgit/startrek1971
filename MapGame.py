@@ -5,7 +5,6 @@ import Glyphs
 from AbsShip import KlingonShip
 from Points import Destination
 from Quadrant import Quadrant
-from Sectors import Sectors
 
 import MapSparse
 
