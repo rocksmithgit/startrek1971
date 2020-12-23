@@ -3,7 +3,7 @@ import Glyphs
 class Stats():
 
     @staticmethod
-    def display_status(game):
+    def show_ship_status(game):
         game.display()
         game.display(f"               Time Remaining: {game.time_remaining}")
         game.display(f"      Klingon Ships Remaining: {game.game_map.klingons}")
@@ -19,7 +19,7 @@ class Stats():
 
 
     @staticmethod
-    def display_galactic_record(game):
+    def show_galactic_status(game):
         game.display()
         game.display("-------------------------------------------------")
         game.display(
@@ -31,7 +31,7 @@ class Stats():
 
 
     @staticmethod
-    def print_game_status(game):
+    def show_game_status(game):
         if game.destroyed:
             msg = "MISSION FAILED: ENTERPRISE DESTROYED!!!"
             game.display('!' * len(msg))

@@ -27,7 +27,7 @@ class abs_display(abc.ABC):
         pass
 
 
-    def print_strings(self, string_list):
+    def show_strings(self, string_list):
         for string in string_list:
             self.display(string)
         self.display()

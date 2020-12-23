@@ -1,4 +1,4 @@
-﻿titleStrings = r"""
+﻿LOGO_TREKER = r"""
                ______ _______ ______ ______    _______ ______  ______ __  __ 
               / __  //__  __// __  // __  /   /__  __// __  / / ____// / / /
              / / /_/   / /  / /_/ // /_/ /      / /  / /_/ / / /__  / // /
@@ -13,7 +13,7 @@
                                    '---._____.|]""".split('\n')
     
 
-quadrantNames = [
+AREA_NAMES = [
     "Aaamazzara",
     "Altair IV",
     "Aurelia",
@@ -96,7 +96,7 @@ quadrantNames = [
     "Zytchin III",
     ]
 
-commandStrings = [
+HELM_CMDS = [
     "--- Commands -----------------",
     "nav = Navigation",
     "srs = Short Range Scan",
@@ -108,11 +108,10 @@ commandStrings = [
     "qui = Quit the game",
     ]
 
-computerStrings = [
+CPU_CMDS = [
     "--- Main Computer --------------",
     "rec = Cumulative Galatic Record",
     "sta = Status Report",
     "tor = Photon Torpedo Targets",
     "bas = Starbase Locations",
-    "nav = Navigation Calculator",
     ]

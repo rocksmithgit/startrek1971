@@ -23,7 +23,7 @@ class Game(Con):
         self.destroyed = False
 
     def run(self):
-        self.print_strings(TrekStrings.titleStrings)
+        self.show_strings(TrekStrings.LOGO_TREKER)
         game.star_date = random.randint(0, 50) + 2250
         game.time_remaining = 40 + random.randint(0, 9)
         game.destroyed = False
@@ -33,12 +33,12 @@ class Game(Con):
         game.game_map.randomize(starbases, stars, aliens)
         self.print_mission()
 
-        self.print_strings(TrekStrings.commandStrings)
+        self.show_strings(TrekStrings.HELM_CMDS)
         while self.enterprise.energy > 0 and not \
             self.destroyed and self.game_map.klingons > 0 and \
             self.time_remaining > 0:
             self.command_prompt()
-            Stats.print_game_status(game)
+            Stats.show_game_status(game)
 
     def command_prompt(self):
         command = self.read("Enter command: ").strip().lower()
@@ -50,17 +50,17 @@ class Game(Con):
         elif command == "lrs":
             game.enterprise.long_range_scan(game)
         elif command == "pha":
-            Control.phaser_controls(game)
+            Control.phasers(game)
         elif command == "tor":
-            Control.torpedo_control(game)
+            Control.torpedos(game)
         elif command == "she":
-            Control.shield_controls(game)
+            Control.shields(game)
         elif command == "com":
-            Control.computer_controls(game)
+            Control.computer(game)
         elif command.startswith('qui') or command.startswith('exi'):
             exit()
         else:
-            self.print_strings(TrekStrings.commandStrings)
+            self.show_strings(TrekStrings.HELM_CMDS)
 
     def print_mission(self):
         self.display("Mission: Destroy {0} Klingon ships in {1} stardates with {2} starbases.".format(

@@ -60,69 +60,7 @@ class Calc():
 
 
     @staticmethod
-    def compute_direction(x1, y1, x2, y2):
-        if x1 == x2:
-            if y1 < y2:
-                direction = 7
-            else:
-                direction = 3
-        elif y1 == y2:
-            if x1 < x2:
-                direction = 1
-            else:
-                direction = 5
-        else:
-            dy = abs(y2 - y1)
-            dx = abs(x2 - x1)
-            angle = atan2(dy, dx)
-            if x1 < x2:
-                if y1 < y2:
-                    direction = 9.0 - 4.0 * angle / pi
-                else:
-                    direction = 1.0 + 4.0 * angle / pi
-            else:
-                if y1 < y2:
-                    direction = 5.0 + 4.0 * angle / pi
-                else:
-                    direction = 5.0 - 4.0 * angle / pi
-        return direction
-
-
-    @staticmethod
-    def navigation_calculator(game):
-        game.display()
-        game.display("Enterprise located in quadrant [%s,%s]." % \
-            (game.game_map.major_x + 1, game.game_map.major_y + 1))
-        game.display()
-        quad_x = game.read_double("Enter destination quadrant X (1--8): ")
-        if quad_x is False or quad_x < 1 or quad_x > 8:
-            game.display("Invalid X coordinate.")
-            game.display()
-            return
-        quad_y = game.read_double("Enter destination quadrant Y (1--8): ")
-        if quad_y is False or quad_y < 1 or quad_y > 8:
-            game.display("Invalid Y coordinate.")
-            game.display()
-            return
-        game.display()
-        qx = int(quad_x) - 1
-        qy = int(quad_y) - 1
-        if qx == game.game_map.major_x and qy == game.game_map.major_y:
-            game.display("That is the current location of the Enterprise.")
-            game.display()
-            return
-        direction = Calc.compute_direction(
-            game.game_map.major_x, 
-            game.game_map.major_y, 
-            qx, qy)
-        game.display("Direction: {0:1.2f}".format(direction))
-        game.display("Distance:  {0:2.2f}".format(
-            Calc.distance(game.game_map.major_x, game.game_map.major_y, qx, qy)))
-        game.display()
-
-
-    @staticmethod
-    def starbase_inventory(game):
+    def show_starbase(game):
         game.display()
         bases = game.game_map.get_all(Glyphs.STARBASE)
         game.display()
@@ -137,7 +75,7 @@ class Calc():
 
 
     @staticmethod
-    def photon_torpedo_calculator(game):
+    def show_torp_targets(game):
         game.display()
         kships = game.game_map.get_area_klingons()
         if len(kships) == 0:

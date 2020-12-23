@@ -166,7 +166,7 @@ class SparseMap:
                 yield col[1]
 
     def name_areas(self):
-        names = list(TrekStrings.quadrantNames)
+        names = list(TrekStrings.AREA_NAMES)
         for num, area in enumerate(self.areas(),1):
             index = random.randint(0, len(names) - 1)
             area.name = names[index]

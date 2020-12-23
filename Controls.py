@@ -10,23 +10,21 @@ from Quips import Quips
 class Control():
 
     @staticmethod
-    def computer_controls(game):
+    def computer(game):
         if game.enterprise.computer_damage > 0:
             game.display(Quips.jibe_damage('computer'))
             game.display()
             return
-        game.print_strings(TrekStrings.computerStrings)
+        game.show_strings(TrekStrings.CPU_CMDS)
         command = game.read("Enter computer command: ").strip().lower()
         if command == "rec":
-            Stats.display_galactic_record(game)
+            Stats.show_galactic_status(game)
         elif command == "sta":
-            Stats.display_status(game)
+            Stats.show_ship_status(game)
         elif command == "tor":
-            Calc.photon_torpedo_calculator(game)
+            Calc.show_torp_targets(game)
         elif command == "bas":
-            Calc.starbase_inventory(game)
-        elif command == "nav":
-            Calc.navigation_calculator(game)
+            Calc.show_starbase(game)
         else:
             game.display()
             game.display("Invalid computer command.")
@@ -35,7 +33,7 @@ class Control():
 
 
     @staticmethod
-    def phaser_controls(game):
+    def phasers(game):
         if game.enterprise.phaser_damage > 0:
             game.display(Quips.jibe_damage("phasers"))
             game.display()
@@ -79,7 +77,7 @@ class Control():
         game.display()
 
 
-    def shield_controls(game):
+    def shields(game):
         game.display("--- Shield Controls ----------------")
         game.display("add = Add energy to shields.")
         game.display("sub = Subtract energy from shields.")
@@ -113,7 +111,7 @@ class Control():
         game.display()
 
 
-    def torpedo_control(game):
+    def torpedos(game):
         if game.enterprise.photon_damage > 0:
             game.display(Quips.jibe_damage('photon launcher'))
             game.display()

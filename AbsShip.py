@@ -149,7 +149,7 @@ class Enterprise(AbsShip):
             game.display()
         else:
             quad = game.game_map.quad()
-            Sectors.print_sector(game, quad)
+            Quadrant.display_area(game, quad)
         game.display()
 
 
