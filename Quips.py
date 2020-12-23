@@ -4,7 +4,7 @@ DAMAGE_PREFIX = [
     "The main ",
     "That @#$#@& ",
     "Our cheap ",
-    "Darnit captian, that ",
+    "Darn-it captain, that ",
     "Yikes, the ",
     ]
 DAMAGE_SUFFIX = [
@@ -12,13 +12,14 @@ DAMAGE_SUFFIX = [
     " is out. We're working on it!",
     " is almost repaired!",
     " is dead.",
-    " is fried. I'm working as fast as I can!",
+    " is fried. Working as fast as we can!",
+    " is toast. Working as fast as I can!",
     " is being replaced.",
     " is dead. Please leave a message.",
     ]
 DEFEAT_PREFIX = [
     "A defeated ",
-    "The vengefull ",
+    "The vengeful ",
     "An angry ",
     "The ejecting ",
     "A confused ",
@@ -35,6 +36,7 @@ DEFEAT_SUFFIX = [
     " is no more.",
     " is recycled.",
     " is eliminated.",
+    " was aborted. Few lives, matter?",
     " ejects.",
     " crew is rescued.",
     " crew is spaced.",
@@ -47,8 +49,8 @@ DEFEAT_SUFFIX = [
     " screams: 'Thy father is a Targ!'",
     " yells: 'Your parents eat bats!'",
     " snarls: 'Thy people eat vermin!'",
-    " yells: 'May you create social diseases!'",
-    " curses: 'Thy fathers spread pox!'",
+    " yells: 'May you create social disease!'",
+    " curses: 'Thy fathers spreadeth pox!'",
     " yells: 'Your mother is progressive!'",
     ]
 

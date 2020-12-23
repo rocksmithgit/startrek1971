@@ -32,7 +32,7 @@ class Calc():
         dist = dest_sys.warp * 8
         energy_required = int(dist)
         if energy_required >= game.enterprise.energy:
-            game.display("Unable to comply. Insufficient energy to travel that speed.")
+            game.display("Insufficient energy to travel at that speed.")
             game.display()
             return
         else:
@@ -79,7 +79,7 @@ class Calc():
         game.display()
         kships = game.game_map.get_area_klingons()
         if len(kships) == 0:
-            game.display("There are no enemy ships in this quadrant.")
+            game.display("There are no enemies in this quadrant.")
             return
 
         game.display("Enemies:")

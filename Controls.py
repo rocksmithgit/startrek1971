@@ -69,7 +69,6 @@ class Control():
             else:
                 game.display(f"Hit ship at [{ship.xpos + 1},{ship.ypos + 1}].")
                 game.display(f"Enemy shield down to {ship.shield_level}.")
-        game.game_map.klingons -= len(destroyed_ships)
         game.game_map.remove_items(destroyed_ships)
         if game.game_map.klingons > 0:
             game.display()
@@ -141,7 +140,6 @@ class Control():
                     num = game.game_map.game_id(ship)
                     game.display(f"Klingon ship #{num} destroyed.")
                     game.display(Quips.jibe_defeat('enemy'))
-                    game.game_map.klingons -= 1
                     game.game_map.remove_items([ship])
                     hit = True
                     break
@@ -156,7 +154,7 @@ class Control():
                 elif ship.glyph == Glyphs.STAR:
                     num = game.game_map.game_id(ship)
                     game.display(f"Torpedo vaporizes star #{num}!")
-                    game.display(Quips.jibe_defeat('scientist'))
+                    game.display(Quips.jibe_defeat('academic'))
                     game.game_map.remove_items([ship])
                     hit = True
                     break

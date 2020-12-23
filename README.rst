@@ -11,7 +11,6 @@ So far:
 
 Original authors did an excellent job here - made the modernization a WHOLE LOT easier!
 
-:monocle_face:
 
 -- Nagy
 

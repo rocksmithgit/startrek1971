@@ -38,7 +38,7 @@ class Game(Con):
             self.destroyed and self.game_map.klingons > 0 and \
             self.time_remaining > 0:
             self.command_prompt()
-            Stats.show_game_status(game)
+            Stats.show_exit_status(game)
 
     def command_prompt(self):
         command = self.read("Enter command: ").strip().lower()

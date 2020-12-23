@@ -13,8 +13,7 @@ class GameMap(MapSparse.SparseMap):
     def __init__(self):
         super().__init__()
         self.sector = -1
-        self.major_x = self.major_y = -1
-        self.xpos    = self.ypos    = -1
+        self.xpos = self.ypos = -1
         self.stars      = -1
         self.klingons   = -1
         self.starbases  = -1
@@ -124,10 +123,16 @@ class GameMap(MapSparse.SparseMap):
                     count += 1
         return count
 
-    def remove_items(self, destroyed_ships):
+    def update_counts(self):
+        self.klingons = self._count(Glyphs.KLINGON)
+        self.starbases = self._count(Glyphs.STARBASE)
+        self.stars = self._count(Glyphs.STAR)
+
+    def remove_items(self, removed):
         area = self.area()
-        for obj in destroyed_ships:
+        for obj in removed:
             area.remove(obj.xpos, obj.ypos)
+        self.update_counts()
 
     def get_area_klingons(self):
         '''
@@ -201,16 +206,6 @@ class GameMap(MapSparse.SparseMap):
             self.enterprise_out()
         assert(isinstance(self.sector, int))
         self.sector = dest.sector
-        if self.sector > 0:
-            fop = (self.sector + 8) / 8
-            self.major_x = int(fop) - 1 # ZERO BASED REGIONS
-            if not fop.is_integer():
-                self.major_y = \
-                ((fop - float(self.major_x)) * 10) - 1 # ZBR
-        else:
-            self.major_x = -1
-            self.major_y = -1
-
         self.xpos = dest.xpos
         self.ypos = dest.ypos
         self.enterprise_in(dest)

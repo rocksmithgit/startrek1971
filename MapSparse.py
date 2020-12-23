@@ -4,7 +4,8 @@ import Glyphs
 
 class SparseMap:
     ''' 
-    Minimalist mapping. On-demand Area epansion to full-Area views.
+    Minimalist mapping. 
+    On-demand 'sparse-array' expansion to full-Area views.
     '''
 
     class Region():

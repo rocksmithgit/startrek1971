@@ -31,7 +31,7 @@ class Stats():
 
 
     @staticmethod
-    def show_game_status(game):
+    def show_exit_status(game):
         if game.destroyed:
             msg = "MISSION FAILED: ENTERPRISE DESTROYED!!!"
             game.display('!' * len(msg))
