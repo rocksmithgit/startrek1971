@@ -38,7 +38,7 @@ class SparseMap:
             self.name = ""
             self.number = -1
             self.scanned = False
-            self.objs = []
+            self._pieces = []
 
         def is_null(self):
             '''
@@ -48,21 +48,21 @@ class SparseMap:
             return dum.name == self.name and \
                 dum.number == self.number and \
                 dum.scanned == self.scanned and \
-                len(dum.objs) == len(self.objs)
+                len(dum.objs) == len(self._pieces)
 
         def is_empty(self):
             ''' Checks to see if the Area has anything ...'''
-            return len(self.objs) == True
+            return len(self._pieces) == True
 
         def items(self):
             ''' Items in the Area ...'''
-            return len(self.objs)
+            return len(self._pieces)
 
         def remove(self, xpos, ypos):
             ''' Remove an item from the Area. '''
-            for ss, obj in enumerate(self.objs):
+            for ss, obj in enumerate(self._pieces):
                 if obj.xpos == xpos and obj.ypos == ypos:
-                    self.objs.remove(obj)
+                    self._pieces.remove(obj)
                     return
 
         def get_map(self):
@@ -71,7 +71,7 @@ class SparseMap:
             of Glyphs.SPACE on error.
             '''
             results = [[Glyphs.SPACE for _ in range(8)] for _ in range(8)]
-            for obj in self.objs:
+            for obj in self._pieces:
                 results[obj.ypos][obj.xpos] = obj.glyph # ASSURED
             return results
 
@@ -91,7 +91,7 @@ class SparseMap:
 
         def get_data(self, glyph):
             results = []
-            for p in self.objs:
+            for p in self._pieces:
                 if p.glyph == glyph:
                     results.append(SparseMap.Area.clone(p))
             return results
@@ -101,7 +101,7 @@ class SparseMap:
             Tally the number of glyphs that we have in the Area.
             '''
             count = 0
-            for p in self.objs:
+            for p in self._pieces:
                 if p.glyph == glyph:
                     count += 1
             return count
@@ -113,11 +113,11 @@ class SparseMap:
             '''
             if self.range_ok(xpos, ypos) is False:
                 return None
-            for p in self.objs:
+            for p in self._pieces:
                 if p.xpos is xpos and p.ypos is ypos:
                     p.glyph = glyph
                     return xpos, ypos
-            self.objs.append(SparseMap.Area.Piece(xpos, ypos, glyph))
+            self._pieces.append(SparseMap.Area.Piece(xpos, ypos, glyph))
             return xpos, ypos
 
         def place_glyph(self, glyph, dest=None):

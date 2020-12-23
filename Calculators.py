@@ -24,7 +24,7 @@ class Calc():
         game.display()
         game.display("Sub-light engines engaged.")
         game.display()
-        game.game_map.go_to(dest_sys)
+        game.move_to(dest_sys)
 
         game.time_remaining -= 1
         game.star_date += 1
@@ -68,7 +68,7 @@ class Calc():
             game.display()
             game.enterprise.energy -= energy_required
 
-        game.game_map.go_to(dest_sys)
+        game.move_to(dest_sys)
 
         game.time_remaining -= 1
         game.star_date += 1

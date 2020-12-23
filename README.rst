@@ -6,6 +6,8 @@ So far:
 
 * Added random event Quips – should make the game a tad more ‘NPC’?
 
+* Added that classic sublight / in system propulsion system. Warp speeds engines are now a seperate navigational system.
+
 * Heavily re-factored for growth, testing, re-use, and maintenance using modern Python.
 
 

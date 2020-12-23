@@ -98,15 +98,11 @@ AREA_NAMES = [
 
 HELM_CMDS = [
     "--- Commands -----------------",
-    "wsn = Warp Speed Navigator",
-    "ssn = Sublight Speed Navigator",
-    "srs = Short Range Scan",
-    "lrs = Long Range Scan",
-    "pha = Phaser Control",
-    "tor = Photon Torpedo Control",
-    "she = Shield Control",
-    "com = Access Computer",
-    "qui = Quit the game",
+    "nav = Warp Speed      srs = Short Range Scan",
+    "sub = Sublight Speed  lrs = Long Range Scan",
+    "pha = Phasers         tor = Photon Torpedos",
+    "she = Shields         com = Access Computer",
+    "qui = Quit",
     ]
 
 CPU_CMDS = [
