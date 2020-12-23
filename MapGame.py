@@ -173,7 +173,7 @@ class GameMap(MapSparse.SparseMap):
         '''
         area = self.area()
         num = (area.number * 100) + (piece.ypos * 8) + piece.xpos
-        return f"{piece.glyph[0]}x{num}"
+        return f"{piece.glyph[1]}x{num}"
 
     def get_all(self, glyph):
         '''

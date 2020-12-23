@@ -99,7 +99,7 @@ class ShipEnterprise(AbsShip):
 
     def repair(self, game):
         '''
-        Rapair damage to the Enterprise.
+        Repair damage to the Enterprise.
         '''
         if self.navigation_damage > 0:
             self.navigation_damage -= 1
@@ -162,17 +162,17 @@ class ShipEnterprise(AbsShip):
         sb = ""
         pw_sector = game.game_map.sector
         if pw_sector < 5:
-            pw_sector = 5
+            pw_sector = 6
         elif pw_sector > 59:
             pw_sector = 59
         dots = None
         for peek in range(pw_sector-5, pw_sector + 6):
             quad = game.game_map.scan_quad(peek)
             lines = \
-                (f"Sector: {quad.number:>02}",
-                f"Enemies:{quad.klingons:>02}",
-                f"Bases:{quad.starbases:>02}",
-                f"Stars: {quad.stars:>03}")
+                (f"| Sector: {quad.number:>02}",
+                f"Enemies: {quad.klingons:>02}",
+                f"Bases: {quad.starbases:>02}",
+                f"Stars: {quad.stars:>03} |")
             str_ = ' | '.join(lines)
             dots = '-' * len(str_) + "\n"
             sb += dots
