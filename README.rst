@@ -1,13 +1,15 @@
-Just forked this one - planning on taking it to the next level ...
+So far:
 
-Want to help? Feel free!
+o Converted from Python 2, to Python 3. 
+o Simplifying coordinate calculations - kudos for the idea!
+o Added random event Quips – should make the game a tad more ‘NPC’?
+o Heavily re-factored for growth, testing, re-use, and maintenance using modern Python.
 
--- Randall
+Original authors did an excellent job here - made the modernization a WHOLE LOT easier!
 
-p.s. Converted to Python 3. Lightly tested - okay!
+-- Nagy
 
-
-
+Original:
 
 
 ================
