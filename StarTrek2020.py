@@ -6,7 +6,9 @@ from Console import Con
 from Calculators import Calc
 from Controls import Control
 from Reports import Stats
-from AbsShip import *
+from ShipKlingon import ShipKlingon
+from ShipStarbase import ShipStarbase
+from ShipEnterprise import ShipEnterprise
 from MapGame import *
 from Points import Destination
 
@@ -33,11 +35,14 @@ class Game(Con):
         self.print_mission()
 
         self.show_strings(TrekStrings.HELM_CMDS)
-        while self.enterprise.energy > 0 and not \
-            self.destroyed and self.game_map.klingons > 0 and \
-            self.time_remaining > 0:
+        running = True
+        while running:
             self.command_prompt()
-            Stats.show_exit_status(game)
+            running = self.enterprise.energy > 0 and not \
+            self.destroyed and self.game_map.klingons > 0 and \
+            self.time_remaining > 0
+            if not running:
+                Stats.show_exit_status(game)
 
     def command_prompt(self):
         command = self.read("Enter command: ").strip().lower()

@@ -2,7 +2,7 @@ import random
 import TrekStrings
 
 import Glyphs
-from AbsShip import ShipKlingon
+from ShipKlingon import ShipKlingon
 from Points import Destination
 from Quadrant import Quadrant
 
@@ -116,7 +116,7 @@ class GameMap(MapSparse.SparseMap):
             return Quadrant.from_area(area)
         return Quadrant()
 
-    def _count(self, glyph):
+    def _count_area(self, glyph):
         ''' Tally the number of glyphs in the AREA '''
         count = 0
         area = self.area()
@@ -127,9 +127,11 @@ class GameMap(MapSparse.SparseMap):
         return count
 
     def update_counts(self):
-        self.klingons = self._count(Glyphs.KLINGON)
-        self.starbases = self._count(Glyphs.STARBASE)
-        self.stars = self._count(Glyphs.STAR)
+        self.klingons = self.starbases = self.stars = 0
+        for area in self.areas():
+            self.klingons  += area.count_glyphs(Glyphs.KLINGON)
+            self.starbases += area.count_glyphs(Glyphs.STARBASE)
+            self.stars     += area.count_glyphs(Glyphs.STAR)
 
     def remove_items(self, removed):
         area = self.area()
@@ -150,13 +152,13 @@ class GameMap(MapSparse.SparseMap):
         return results
 
     def num_area_klingons(self):
-        return self._count(Glyphs.KLINGON)
+        return self._count_area(Glyphs.KLINGON)
 
     def num_area_starbases(self):
-        return self._count(Glyphs.STARBASE)
+        return self._count_area(Glyphs.STARBASE)
 
     def num_area_stars(self):
-        return self._count(Glyphs.STAR)
+        return self._count_area(Glyphs.STAR)
 
     def get_area_objects(self):
         '''

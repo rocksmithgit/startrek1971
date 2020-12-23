@@ -21,13 +21,13 @@ class Stats():
     @staticmethod
     def show_galactic_status(game):
         game.display()
-        game.display("-------------------------------------------------")
-        game.display(
-            f"{Glyphs.KLINGON}{game.game_map.klingons}|" +
-            f"{Glyphs.STARBASE}|{game.game_map.starbases}|" +
-            f"{Glyphs.STAR}{game.game_map.stars}")
-        game.display("-------------------------------------------------")
-        game.display()
+        str_ = f"| KLINGONS: {game.game_map.klingons:>04} | " + \
+               f"STARBASES: {game.game_map.starbases:>04} | " + \
+               f"STARS: {game.game_map.stars:>04} |"
+        dots = len(str_) * '-'
+        game.display(dots)
+        game.display(str_)
+        game.display(dots)
 
 
     @staticmethod

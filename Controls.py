@@ -1,7 +1,11 @@
 import random
 
 import TrekStrings
-from AbsShip import *
+import Glyphs
+from ShipKlingon import ShipKlingon
+from ShipKlingon import ShipKlingon
+#from ShipStarbase import ShipStarbase
+from ShipEnterprise import ShipEnterprise
 from Calculators import Calc
 from Reports import Stats
 from Quips import Quips
