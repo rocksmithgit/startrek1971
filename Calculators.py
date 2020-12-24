@@ -3,7 +3,7 @@ import random
 
 from MapGame import *
 from AbsShip import *
-from Points import Destination
+from Points import *
 
 class Calc():
 

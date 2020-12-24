@@ -1,5 +1,5 @@
 from AbsDisplay import abs_display
-from Points import Destination
+from Points import *
 
 class Con(abs_display):
     '''
@@ -33,19 +33,15 @@ class Con(abs_display):
         Example: b,4 
         '''
         text = input(prompt + ': ')
-        return Destination.parse_xypos(text)
+        return SubDest.parse(text)
 
     def read_sector(self, prompt= "Helm: sector 1-64, speed 1.0-9.0?"):
         text = input(prompt + ': ')
-        return Destination.parse_warp(text)
-
-    def read_nav(self, prompt= "Helm: sector 1-64, a-h, 1-8?"):
-        text = input(prompt + ': ')
-        return Destination.parse_sector(text)
+        return WarpDest.parse(text)
 
     def read_xypos(self, prompt= "Helm: a-h, 1-8?"):
         text = input(prompt + ': ')
-        return Destination.parse_xypos(text)
+        return SubDest.parse(text)
 
 
 if __name__ == '__main__':

@@ -3,7 +3,7 @@ import TrekStrings
 
 import Glyphs
 from ShipKlingon import ShipKlingon
-from Points import Destination
+from Points import *
 from Quadrant import Quadrant
 from ErrorCollision import ErrorEnterpriseCollision
 
@@ -58,12 +58,14 @@ class GameMap(MapSparse.SparseMap):
 
     def enterprise_in(self, dest=None):
         ''' Place the ENTERPRISE at the destination, else a 
-        random one. 
+        random one.
         
         Will raise an ErrorEnterpriseCollision, upon same.
 
         Returns the final x, y location upon success '''
         area = self.pw_area()
+        if not dest:
+            return area.place_glyph(Glyphs.ENTERPRISE)
         berror = False
         if area:
             for p in area._pieces:
@@ -211,7 +213,7 @@ class GameMap(MapSparse.SparseMap):
         return area.get_map()
 
     def random_jump(self):
-        dest = Destination(
+        dest = SubDest(
             random.randint(1, 64),
             random.randint(0, 7),
             random.randint(0, 7)
@@ -219,21 +221,27 @@ class GameMap(MapSparse.SparseMap):
         self._go_to(dest)
 
     def _go_to(self, dest):
-        '''
+        ''' Either a WARP ~or~ a SUBSPACE destination is ok.
         Place the main player (Enterprise, for now) into the Area.
         Returns the final, effective, player location.
         '''
+        if not dest:
+            return
         if self.last_nav:
             self.enterprise_out()
-        if dest.sector > 0:
-            self.sector = dest.sector
-        if dest.xpos != -1:
-            self.xpos = dest.xpos
-            self.ypos = dest.ypos
-        dest.sector = self.sector
-        dest.xpos = self.xpos
-        dest.ypos = self.ypos
-        pos = self.enterprise_in(dest)
+        pos = None
+        if isinstance(dest, WarpDest):
+            if dest.sector > 0:
+                self.sector = dest.sector
+            dest.sector = self.sector
+            pos = self.enterprise_in() # SAFE WARP-IN!
+        else:
+            if dest.xpos != -1:
+                self.xpos = dest.xpos
+                self.ypos = dest.ypos
+            dest.xpos = self.xpos
+            dest.ypos = self.ypos
+            pos = self.enterprise_in(dest) # CAPIN' KNOWS BEST?
         dest.xpos = pos[0]
         dest.ypos = pos[1]
         self.last_nav = dest

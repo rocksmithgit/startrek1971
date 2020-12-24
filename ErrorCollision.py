@@ -7,5 +7,3 @@ class ErrorEnterpriseCollision(Exception):
         self.glyph = glyph
 
 
-
-

@@ -8,7 +8,7 @@ from ShipEnterprise import ShipEnterprise
 from Calculators import Calc
 from Controls import Control
 from Reports import Stats
-from Points import Destination
+from Points import *
 from Quips import Quips
 from MapGame import *
 
@@ -32,6 +32,7 @@ class Game(Con):
                 if p.xpos + 1 == pos.xpos or p.ypos + 1 == pos.ypos or \
                     p.xpos - 1 == pos.xpos or p.ypos - 1 == pos.ypos:
                         self.enterprise.docked = True
+                        ShipStarbase.dock_enterprise(self.enterprise)
         return pos
 
     def run(self):
@@ -43,7 +44,7 @@ class Game(Con):
         aliens    = random.randrange(12, 16)
         starbases = random.randrange(6, 8)
         game.game_map.randomize(starbases, stars, aliens)
-        dest = Destination(64, 5, 5)
+        dest = WarpDest(64, 0)
         game.move_to(dest)
         game.game_map.get_area(64).name = 'Outer Limits'
         self.print_mission()
@@ -70,6 +71,7 @@ class Game(Con):
             self.destroyed = True
         game.display()
         self.display(Quips.jibe_fatal_mistake())
+        game.display()
         game.display(';-)')
         return False
 
