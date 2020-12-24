@@ -76,11 +76,9 @@ class Game(Con):
     def command_prompt(self):
         command = self.read("Enter command: ").strip().lower()
         self.display()
-        if command == "nav": # force of habit?
+        if command == "nav":
             Calc.warp_navigation(game)
-        if command == "wsn":
-            Calc.warp_navigation(game)
-        if command == "ssn":
+        if command == "sub":
             Calc.sublight_navigation(game)
         elif command == "srs":
             game.enterprise.short_range_scan(game)

@@ -1,6 +1,6 @@
 class ErrorEnterpriseCollision(Exception):
     '''
-    ... because some problems simpy have to wait ... =)
+    ... because some problems simply have to wait ... =)
     '''
     def __init__(self, glyph):
         super().__init__()
