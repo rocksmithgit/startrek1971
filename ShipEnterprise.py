@@ -2,6 +2,7 @@ import random
 from AbsShip import AbsShip
 from ShipStarbase import ShipStarbase
 from Quadrant import Quadrant
+import Glyphs
 
 class ShipEnterprise(AbsShip):
 
@@ -120,26 +121,27 @@ class ShipEnterprise(AbsShip):
             game.display(Quips.jibe_damage('Long Ranged Scanners'))
             game.display()
             return
-        sb = ""
+
         pw_sector = game.game_map.sector
-        if pw_sector < 5:
-            pw_sector = 6
-        elif pw_sector > 59:
-            pw_sector = 59
-        dots = None
-        for peek in range(pw_sector-5, pw_sector + 6):
+        if pw_sector < 4:
+            pw_sector = 5
+        elif pw_sector > 60:
+            pw_sector = 60
+        lines = []
+        for peek in range(pw_sector-4, pw_sector + 5):
             quad = game.game_map.scan_quad(peek)
-            lines = \
-                (f"| Sector: {quad.number:>02}",
-                f"Enemies: {quad.klingons:>02}",
-                f"Bases: {quad.starbases:>02}",
-                f"Stars: {quad.stars:>03} |")
-            str_ = ' | '.join(lines)
-            dots = '-' * len(str_) + "\n"
-            sb += dots
-            sb += str_
-            game.display(sb)
-            sb = ""
+            lines.append(f"SEC: {quad.number:>03}")
+            lines.append(f"{Glyphs.KLINGON}: {quad.klingons:>03}")
+            lines.append(f"{Glyphs.STARBASE}: {quad.starbases:>03}")
+            lines.append(f"{Glyphs.STAR}: {quad.stars:>03}")
+        dots = '     +' + ('-' * 35) + '+'
         game.display(dots)
+        game.display('     |          LONG RANGE SCAN          |')
+        game.display(dots)
+        for ss in range(0,(len(lines)-1),12):
+            for offs in range(4):
+                line = f'     | {lines[ss+offs]:<9} | {lines[ss+4+offs]:<9} | {lines[ss+8+offs]:<9} |'
+                game.display(line)
+            game.display(dots)
         game.display()
 
