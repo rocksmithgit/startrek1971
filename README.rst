@@ -1,8 +1,11 @@
+The original free-and-open StarTrek console game was THE most played game of the day .... back in the 1970's! 
+
+
 So far:
 
 * Converted from Python 2, to Python 3. 
 
-* Simplifying coordinate calculations - kudos for the idea!
+* Changed in-system coordinates to simple 'chess like' (b,4 (etc)) references.
 
 * Added random event Quips – should make the game a tad more ‘NPC’?
 
@@ -10,6 +13,7 @@ So far:
 
 * Heavily re-factored for growth, testing, re-use, and maintenance using modern Python.
 
+Video: https://youtu.be/TpmtCLOJ5Uw
 
 Original authors did an excellent job here - made the modernization a WHOLE LOT easier!
 
