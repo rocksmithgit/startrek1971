@@ -26,6 +26,7 @@ class Game(Con):
     def move_to(self, dest):
         pos = self.game_map._go_to(dest)
         area = self.game_map.pw_area()
+        was_docked = self.enterprise.docked
         self.enterprise.docked = False
         for p in area._pieces:
             if p.glyph == Glyphs.STARBASE:
@@ -33,6 +34,8 @@ class Game(Con):
                     p.xpos - 1 == pos.xpos or p.ypos - 1 == pos.ypos:
                         self.enterprise.docked = True
                         ShipStarbase.dock_enterprise(self.enterprise)
+        if was_docked and self.enterprise.docked == False:
+            ShipStarbase.launch_enterprise(self.enterprise)
         return pos
 
     def run(self):

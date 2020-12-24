@@ -242,8 +242,8 @@ class GameMap(MapSparse.SparseMap):
             dest.xpos = self.xpos
             dest.ypos = self.ypos
             pos = self.enterprise_in(dest) # CAPIN' KNOWS BEST?
-        dest.xpos = pos[0]
-        dest.ypos = pos[1]
+        self.xpos = dest.xpos = pos[0]
+        self.ypos = dest.ypos = pos[1]
         self.last_nav = dest
         return dest
 
