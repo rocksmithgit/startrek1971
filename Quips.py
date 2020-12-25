@@ -28,7 +28,7 @@ DEFEAT_PREFIX = [
     ]
 DEFEAT_SUFFIX = [
     " says: `I'll be back!`",
-    " cries: 'lucky shot!'",
+    " cries: ... 'a lucky shot!'",
     " sighs bitterly.",
     " dies.",
     " is rescued.",
@@ -38,16 +38,20 @@ DEFEAT_SUFFIX = [
     " is eliminated.",
     " was aborted. Few lives, matter?",
     " ejects.",
-    " was confused.",
     " crew is rescued.",
     " crew is spaced.",
     " crew is recycled.",
     " crew is recovered.",
+    " yells: 'Thy mother mates poorly!'",
     " snarls: 'Lucky shot.'",
     " laughs: 'You'll not do THAT again!'",
     " says nothing.",
-    " screams: 'Thy father was a Targ!'",
-    " yells: 'Thy mother is progressive!'",
+    " screams: 'Thy father is a Targ!'",
+    " yells: 'Your parents eat bats!'",
+    " snarls: 'Thy people eat vermin!'",
+    " yells: 'May you create social disease!'",
+    " curses: 'Thy fathers spreadeth pox!'",
+    " yells: 'Your mother is progressive!'",
     ]
 MISTAKES = [
     "... the crew was not impressed ...",
@@ -55,17 +59,18 @@ MISTAKES = [
     "... next time, remember to 'carry the 1'? ...",
     "... math lives matter ...",
     "... that's coming out of your paycheck ...",
-    "... this is not a bumpy car ...",
+    "... this is not a bumper car ...",
     "... life can be tough, that way ...",
     "... who ordered THAT take-out ...",
     "... random is, what random does ...",
     "... you've got their attention ...",
+    "... next time, just text them ...",
     "... how rude!",
     "... yes, karma CAN hurt ...",
     "... life is but a dream!",
     "... game over.",
-    "... they will talk about this for years.",
-    "... who is going to pay for that?",
+    "... they will talk about this one for years.",
+    "... who is going to pay for this?",
     "... galactic insurance premiums skyrocket ...",
     "... captain goes down with the starship ...",
     "... we'll notify your next-of-kin.",
@@ -83,15 +88,15 @@ class Quips():
     
     @staticmethod
     def jibe_damage(noun):
-        if random.randint(0, 100) > 25:
+        if random.randrange(0, 100) > 25:
             return f"{noun.capitalize()} damaged. Repairs are underway."
-        return Quips.jibe(noun.lower(), DAMAGE_PREFIX, DAMAGE_SUFFIX)
+        return Quips.jibe(noun, DAMAGE_PREFIX, DAMAGE_SUFFIX)
     
     @staticmethod
     def jibe_defeat(noun):
-        if random.randint(0, 100) > 25:
+        if random.randrange(0, 100) > 25:
             return f"Another {noun.lower()} defeated."
-        return Quips.jibe(noun.lower(), DEFEAT_PREFIX, DEFEAT_SUFFIX)
+        return Quips.jibe(noun, DEFEAT_PREFIX, DEFEAT_SUFFIX)
     
     @staticmethod
     def jibe_fatal_mistake():
