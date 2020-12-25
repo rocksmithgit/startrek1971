@@ -15,7 +15,7 @@ class ShipKlingon(AbsShip):
     def from_map(self, xpos, ypos):
         self.xpos = xpos
         self.ypos = ypos
-        self.shield_level = 300 + random.randint(0, 199)
+        self.shield_level = random.randint(300, 599)
 
     @staticmethod
     def attack_if_you_can(game):

@@ -1,8 +1,10 @@
 import random
 from AbsShip import AbsShip
 from ShipStarbase import ShipStarbase
-from Quadrant import Quadrant
+from Sector import Sector
+from Difficulity import Probabilities
 import Glyphs
+from Quips import Quips
 
 class ShipEnterprise(AbsShip):
 
@@ -29,11 +31,9 @@ class ShipEnterprise(AbsShip):
         '''
         Damage the Enterprise.
         '''
-        if game.is_testing:
+        if not Probabilities.should_damage_enterprise(game, item):
             return
-        if random.randint(0, 6) > 0:
-            return
-        damage = 1 + random.randint(0, 4)
+        damage = Probabilities.calc_damage(game, item)
         if item < 0:
             item = random.randint(0, 6)
         if item == 0:
@@ -41,10 +41,10 @@ class ShipEnterprise(AbsShip):
             game.display(Quips.jibe_damage('Warp Engines'))
         elif item == 1:
             self.short_range_scan_damage = damage
-            game.display(Quips.jibe_damage('Short Range Scanners'))
+            game.display(Quips.jibe_damage('Short Range Scanner'))
         elif item == 2:
             self.long_range_scan_damage = damage
-            game.display(Quips.jibe_damage('Long Range Scanners'))
+            game.display(Quips.jibe_damage('Long Range Scanner'))
         elif item == 3:
             self.shield_control_damage = damage
             game.display(Quips.jibe_damage('Shield Controls'))
@@ -73,7 +73,7 @@ class ShipEnterprise(AbsShip):
             self.short_range_scan_damage -= 1
             if self.short_range_scan_damage == 0:
                 game.display("Short range scanner has been repaired.")
-            self.display()
+            game.display()
             return True
         if self.long_range_scan_damage > 0:
             self.long_range_scan_damage -= 1
@@ -109,16 +109,18 @@ class ShipEnterprise(AbsShip):
 
     def short_range_scan(self, game):
         if self.short_range_scan_damage > 0:
-            game.display(Quips.jibe_damage('Short Ranged Scanners'))
+            game.display(Quips.jibe_damage('Short Ranged Scanner'))
             game.display()
         else:
-            quad = game.game_map.quad()
-            Quadrant.display_area(game, quad)
+            quad = game.game_map.get_pw_sector()
+            Sector.display_area(game, quad)
         game.display()
+        if not game.enterprise.repair(game):
+            game.enterprise.damage(game, Probabilities.SRS)
 
     def long_range_scan(self, game):
         if self.long_range_scan_damage > 0:
-            game.display(Quips.jibe_damage('Long Ranged Scanners'))
+            game.display(Quips.jibe_damage('Long Ranged Scanner'))
             game.display()
             return
 
@@ -129,11 +131,11 @@ class ShipEnterprise(AbsShip):
             pw_sector = 60
         lines = []
         for peek in range(pw_sector-4, pw_sector + 5):
-            quad = game.game_map.scan_quad(peek)
+            quad = game.game_map.scan_sector(peek)
             lines.append(f"SEC: {quad.number:>03}")
-            lines.append(f"{Glyphs.KLINGON}: {quad.klingons:>03}")
-            lines.append(f"{Glyphs.STARBASE}: {quad.starbases:>03}")
-            lines.append(f"{Glyphs.STAR}: {quad.stars:>03}")
+            lines.append(f"{Glyphs.KLINGON}: {quad.area_klingons:>03}")
+            lines.append(f"{Glyphs.STARBASE}: {quad.area_starbases:>03}")
+            lines.append(f"{Glyphs.STAR}: {quad.area_stars:>03}")
         dots = '     +' + ('-' * 35) + '+'
         game.display(dots)
         game.display('     |          LONG RANGE SCAN          |')
@@ -144,4 +146,6 @@ class ShipEnterprise(AbsShip):
                 game.display(line)
             game.display(dots)
         game.display()
+        if not game.enterprise.repair(game):
+            game.enterprise.damage(game, Probabilities.SRS)
 

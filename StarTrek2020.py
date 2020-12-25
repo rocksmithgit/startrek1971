@@ -38,14 +38,23 @@ class Game(Con):
             ShipStarbase.launch_enterprise(self.enterprise)
         return pos
 
+    def game_over(self):
+        '''
+        Check to see if the game is over.
+        '''
+        running = self.enterprise.energy > 0 and not \
+        self.destroyed and self.game_map.game_klingons > 0 and \
+        self.time_remaining > 0
+        return running
+
     def run(self):
         self.show_strings(TrekStrings.LOGO_TREKER)
-        game.star_date = random.randint(0, 50) + 2250
-        game.time_remaining = 40 + random.randint(0, 9)
+        game.star_date = random.randint(2250, 2300)
+        game.time_remaining = random.randint(40, 45)
         game.destroyed = False
-        stars     = random.randrange(400, 600) # 4096 = ALL
-        aliens    = random.randrange(12, 16)
-        starbases = random.randrange(6, 8)
+        stars     = random.randint(500, 700) # 4096 = ALL
+        aliens    = random.randint(14, 24)
+        starbases = random.randint(6, 8)
         game.game_map.randomize(starbases, stars, aliens)
         dest = WarpDest(64, 0)
         game.move_to(dest)
@@ -57,10 +66,7 @@ class Game(Con):
         try:
             while running:
                 self.command_prompt()
-                running = self.enterprise.energy > 0 and not \
-                self.destroyed and self.game_map.klingons > 0 and \
-                self.time_remaining > 0
-                if not running:
+                if not self.game_over():
                     Stats.show_exit_status(game)
         except ErrorEnterpriseCollision as ex:
             Stats.show_exit_status(game)
@@ -104,7 +110,7 @@ class Game(Con):
 
     def print_mission(self):
         self.display("Mission: Destroy {0} Klingon ships in {1} stardates with {2} starbases.".format(
-            self.game_map.klingons, self.time_remaining, self.game_map.starbases))
+            self.game_map.game_klingons, self.time_remaining, self.game_map.game_starbases))
         self.display()
 
 
