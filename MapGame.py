@@ -179,7 +179,7 @@ class GameMap(MapSparse.SparseMap):
             self.game_klingons  += area.count_glyphs(Glyphs.KLINGON)
             self.game_starbases += area.count_glyphs(Glyphs.STARBASE)
             self.game_stars     += area.count_glyphs(Glyphs.STAR)
-        area = self.get_area()
+        area = self.get_pw_sector()
 
 
     def remove_area_items(self, piece_array)->None:
