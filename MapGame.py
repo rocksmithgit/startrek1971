@@ -4,7 +4,7 @@ import TrekStrings
 import Glyphs
 from ShipKlingon import ShipKlingon
 from Points import *
-from Quadrant import Quadrant
+from Sector import Sector
 from ErrorCollision import ErrorEnterpriseCollision
 
 import MapSparse
@@ -15,9 +15,9 @@ class GameMap(MapSparse.SparseMap):
         super().__init__()
         self.sector = -1
         self.xpos = self.ypos = -1
-        self.stars      = -1
-        self.klingons   = -1
-        self.starbases  = -1
+        self.game_stars      = -1
+        self.game_klingons   = -1
+        self.game_starbases  = -1
         self.last_nav = None
         
     def place(self, takers):
@@ -30,16 +30,16 @@ class GameMap(MapSparse.SparseMap):
         for which, nelem in enumerate(takers):
             if not nelem:
                 continue
-            to_take = random.randrange(0, nelem)
+            to_take = random.randint(0, nelem)
             if nelem is 1:
                 to_take = 1
             if not to_take:
                 continue
             taken = 0
             while taken != to_take:
-                ss = random.randrange(1, 64)
+                ss = random.randrange(1, 64) # Ignore "Outer Limits"
                 area = self.get_area(ss)
-                should_take = random.randrange(1, 8)
+                should_take = random.randint(1, 8)
                 if which is 0:
                     if area.count_glyphs(Glyphs.STARBASE) != 0:
                         continue
@@ -57,12 +57,14 @@ class GameMap(MapSparse.SparseMap):
         return tuple(takers)
 
     def enterprise_in(self, dest=None):
-        ''' Place the ENTERPRISE at the destination, else a 
+        ''' 
+        Place the ENTERPRISE at the destination, else a 
         random one.
         
         Will raise an ErrorEnterpriseCollision, upon same.
 
-        Returns the final x, y location upon success '''
+        Returns the final x, y location upon success 
+        '''
         area = self.pw_area()
         if not dest:
             return area.place_glyph(Glyphs.ENTERPRISE)
@@ -80,7 +82,9 @@ class GameMap(MapSparse.SparseMap):
         return False
 
     def enterprise_location(self):
-        ''' Get Enterprise location. False if not found. '''
+        ''' 
+        Get Enterprise location. False if not found. 
+        '''
         area = self.pw_area()
         if area:
             for obj in area._pieces:
@@ -88,14 +92,18 @@ class GameMap(MapSparse.SparseMap):
                     return obj.xpos, obj.ypos
         return False
 
-    def enterprise_out(self):
-        ''' Remove the ENTERPRISE from the present AREA '''
+    def enterprise_out(self)->None:
+        ''' 
+        Remove the ENTERPRISE from the present AREA 
+        '''
         pos = self.enterprise_location()
         if pos:
-            self.remove(*pos)
+            self.clear_area(*pos)
 
-    def place_glyph(self, glyph, dest=None):
-        ''' Place the glyph as the destination, else a random one '''
+    def place_glyph(self, glyph, dest=None)->bool:
+        ''' 
+        Place the glyph at the destination, else a random one 
+        '''
         area = self.pw_area()
         if area:
             pos = area.place_glyph(self, glyph, dest)
@@ -103,13 +111,15 @@ class GameMap(MapSparse.SparseMap):
                 return True
         return False
 
-    def remove(self, xpos, ypos):
-        ''' Remove ANYTHING from the present AREA '''
+    def clear_area(self, xpos, ypos)->None:
+        ''' 
+        Remove ANYTHING from the present AREA 
+        '''
         area = self.pw_area()
         if area:
             area.remove(xpos, ypos)
 
-    def pw_area(self):
+    def pw_area(self)->MapSparse.SparseMap.Area:
         ''' 
         Return the internal / sparsely populated AREA object.
         Return an empty / default AREA upon coordinate error.
@@ -120,18 +130,38 @@ class GameMap(MapSparse.SparseMap):
                     return area
         return MapSparse.SparseMap.Area()
 
-    def scan_quad(self, sector):
+    def scan_sector(self, sector)->Sector:
         '''
-        Return a scan (LRS?) for a specific quadrant.
-        Return empty quadrant, on error.
+        Return Sector() information (e.g. LRS) for a specific AREA.
+        Return empty Sector() upon error.
         '''
         area = self.get_area(sector)
         if area:
-            return Quadrant.from_area(area)
-        return Quadrant()
+            return Sector.from_area(area)
+        return Sector()
 
-    def _count_area(self, glyph):
-        ''' Tally the number of glyphs in the AREA '''
+    def count_area_klingons(self)->int:
+        '''
+        How many surround, U.S.S?
+        '''
+        return self._count_area(Glyphs.KLINGON)
+
+    def count_area_starbases(self)->int:
+        '''
+        How many surround, U.S.S?
+        '''
+        return self._count_area(Glyphs.STARBASE)
+
+    def count_area_stars(self)->int:
+        '''
+        How many surround, U.S.S?
+        '''
+        return self._count_area(Glyphs.STAR)
+
+    def _count_area(self, glyph)->int:
+        ''' 
+        Tally the number of glyphs in the DEFAULT AREA 
+        '''
         count = 0
         area = self.pw_area()
         if area:
@@ -140,20 +170,29 @@ class GameMap(MapSparse.SparseMap):
                     count += 1
         return count
 
-    def update_counts(self):
-        self.klingons = self.starbases = self.stars = 0
+    def update_counts(self)->None:
+        '''
+        Update this map's official game-pieces-in-play tally
+        '''
+        self.game_klingons = self.game_starbases = self.game_stars = 0
         for area in self.areas():
-            self.klingons  += area.count_glyphs(Glyphs.KLINGON)
-            self.starbases += area.count_glyphs(Glyphs.STARBASE)
-            self.stars     += area.count_glyphs(Glyphs.STAR)
+            self.game_klingons  += area.count_glyphs(Glyphs.KLINGON)
+            self.game_starbases += area.count_glyphs(Glyphs.STARBASE)
+            self.game_stars     += area.count_glyphs(Glyphs.STAR)
+        area = self.get_area()
 
-    def remove_items(self, removed):
+
+    def remove_area_items(self, piece_array)->None:
+        '''
+        Remove a collection of pieces (e.g. ships), 
+        from the PRESENT / default AREA.
+        '''
         area = self.pw_area()
-        for obj in removed:
+        for obj in piece_array:
             area.remove(obj.xpos, obj.ypos)
         self.update_counts()
 
-    def get_area_klingons(self):
+    def get_area_klingons(self)->list:
         '''
         Return this Area's data for Kingons, in an array.
         '''
@@ -165,16 +204,7 @@ class GameMap(MapSparse.SparseMap):
             results.append(ship)
         return results
 
-    def num_area_klingons(self):
-        return self._count_area(Glyphs.KLINGON)
-
-    def num_area_starbases(self):
-        return self._count_area(Glyphs.STARBASE)
-
-    def num_area_stars(self):
-        return self._count_area(Glyphs.STAR)
-
-    def get_area_objects(self):
+    def get_area_objects(self)->list:
         '''
         Return the actual objects, as located in the Area. 
         NOTE: Changes to this collection will update Area
@@ -183,7 +213,7 @@ class GameMap(MapSparse.SparseMap):
         area = self.pw_area()
         return area._pieces
 
-    def game_id(self, piece):
+    def get_game_id(self, piece)->str:
         '''
         Uniquely identify a game piece / object.
         '''
@@ -191,7 +221,7 @@ class GameMap(MapSparse.SparseMap):
         num = (area.number * 100) + (piece.ypos * 8) + piece.xpos
         return f"{piece.glyph[1]}x{num}"
 
-    def get_all(self, glyph):
+    def get_all(self, glyph)->list:
         '''
         Return [ [AREA, PIECE], ... ] for every glyph found.
         '''
@@ -201,24 +231,19 @@ class GameMap(MapSparse.SparseMap):
                 results.append([area, piece])
         return results
 
-    def quad(self):
+    def get_pw_sector(self)->Sector:
+        '''
+        Create a Sector() report for the DEFAULT AREA
+        '''
         area = self.pw_area()
-        return Quadrant.from_area(area)
+        return Sector.from_area(area)
 
-    def get_map(self):
+    def get_map(self)->list:
         ''' 
         Generate AREA map of the present sector.
         '''
         area = self.pw_area()
         return area.get_map()
-
-    def random_jump(self):
-        dest = SubDest(
-            random.randint(1, 64),
-            random.randint(0, 7),
-            random.randint(0, 7)
-            )
-        self._go_to(dest)
 
     def _go_to(self, dest):
         ''' Either a WARP ~or~ a SUBSPACE destination is ok.
@@ -247,14 +272,14 @@ class GameMap(MapSparse.SparseMap):
         self.last_nav = dest
         return dest
 
-    def randomize(self, bases=None, stars=None, aliens=None):
+    def randomize(self, bases=None, stars=None, aliens=None)->None:
         if not aliens:
-            aliens = 15 + random.randint(0, 5)
+            aliens = random.randint(5, 10)
         if not bases:
-            bases = 2 + random.randint(0, 2)
-        self.starbases = bases
-        self.klingons = aliens
-        self.stars = stars
+            bases = random.randint(2, 4)
+        self.game_starbases = bases
+        self.game_klingons = aliens
+        self.game_stars = stars
         self.init()
         takers = bases, stars, aliens
         while takers:

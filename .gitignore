@@ -35,3 +35,5 @@
 /__pycache__/ShipKlingon.cpython-37.pyc
 /__pycache__/ShipEnterprise.cpython-37.pyc
 /__pycache__/ErrorCollision.cpython-37.pyc
+/__pycache__/Sector.cpython-37.pyc
+/__pycache__/Difficulity.cpython-37.pyc

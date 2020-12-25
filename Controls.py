@@ -9,6 +9,7 @@ from ShipEnterprise import ShipEnterprise
 from Calculators import Calc
 from Reports import Stats
 from Quips import Quips
+from Difficulity import Probabilities
 
 class Control():
 
@@ -32,7 +33,7 @@ class Control():
             game.display()
             game.display("Invalid computer command.")
             game.display()
-        game.enterprise.damage(game, 4)
+        game.enterprise.damage(game, Probabilities.COMPUTER)
 
 
     @staticmethod
@@ -43,7 +44,7 @@ class Control():
             return
         kships = game.game_map.get_area_klingons()
         if len(kships) == 0:
-            game.display("There are no Klingon ships in this quadrant.")
+            game.display("There are no Klingon ships in this sector.")
             game.display()
             return
         game.display("Phasers locked on target.")
@@ -72,11 +73,12 @@ class Control():
             else:
                 game.display(f"Hit ship at [{ship.xpos + 1},{ship.ypos + 1}].")
                 game.display(f"Enemy shield down to {ship.shield_level}.")
-        game.game_map.remove_items(destroyed_ships)
-        if game.game_map.klingons > 0:
+        game.game_map.remove_area_items(destroyed_ships)
+        if game.game_map.count_area_klingons() > 0:
             game.display()
             ShipKlingon.attack_if_you_can(game)
         game.display()
+        game.enterprise.damage(game, Probabilities.PHASERS)
 
 
     def shields(game):
@@ -111,6 +113,7 @@ class Control():
             game.enterprise.shield_level -= int(transfer)
         game.display("Shield strength is now {0}. Energy level is now {1}.".format(game.enterprise.shield_level, game.enterprise.energy))
         game.display()
+        game.enterprise.damage(game, Probabilities.SHIELDS)
 
 
     def torpedos(game):
@@ -122,8 +125,8 @@ class Control():
             game.display("Photon torpedoes exhausted.")
             game.display()
             return
-        if len(game.game_map.get_area_klingons()) == 0:
-            game.display("There are no Klingon ships in this quadrant.")
+        if game.game_map.count_area_klingons() == 0:
+            game.display("There are no Klingon ships in this sector.")
             game.display()
             return
         shot = game.read_xypos()
@@ -140,33 +143,34 @@ class Control():
                 print(f'{ship.glyph}({ship.xpos},{ship.ypos}), shot({shot.xpos},{shot.ypos})')
             if ship.xpos == shot.xpos and ship.ypos == shot.ypos:
                 if ship.glyph == Glyphs.KLINGON:
-                    num = game.game_map.game_id(ship)
+                    num = game.game_map.get_game_id(ship)
                     game.display(f"Klingon ship #{num} destroyed.")
                     game.display(Quips.jibe_defeat('enemy'))
-                    game.game_map.remove_items([ship])
+                    game.game_map.remove_area_items([ship])
                     hit = True
                     break
                 elif ship.glyph == Glyphs.STARBASE:
-                    game.game_map.starbases -= 1
-                    num = game.game_map.game_id(ship)
+                    game.game_map.game_starbases -= 1
+                    num = game.game_map.get_game_id(ship)
                     game.display("Federation Starbase #{num} destroyed!")
                     game.display(Quips.jibe_defeat('commander'))
-                    game.game_map.remove_items([ship])
+                    game.game_map.remove_area_items([ship])
                     hit = True
                     break
                 elif ship.glyph == Glyphs.STAR:
-                    num = game.game_map.game_id(ship)
+                    num = game.game_map.get_game_id(ship)
                     game.display(f"Torpedo vaporizes star #{num}!")
                     game.display(Quips.jibe_defeat('academic'))
-                    game.game_map.remove_items([ship])
+                    game.game_map.remove_area_items([ship])
                     hit = True
                     break
         if not hit:
             game.display("Torpedo missed.")
-        if len(game.game_map.get_area_klingons()) > 0:
+        if game.game_map.count_area_klingons() > 0:
             game.display()
             ShipKlingon.attack_if_you_can(game)
         game.display()
+        game.enterprise.damage(game, Probabilities.PHOTON)
 
 
 

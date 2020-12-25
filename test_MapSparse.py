@@ -17,7 +17,7 @@ def define_map():
     map.init()
     for ypos, area in enumerate(range(8)):
         for xpos, area in enumerate(range(8)):
-            which = random.randrange(0, 14)
+            which = random.randint(0, 14)
             glyph = Glyphs.SPACE
             if which < 0:
                 pass
@@ -29,8 +29,8 @@ def define_map():
                 glyph = Glyphs.KLINGON
 
             map.plot(area, 
-                     random.randrange(0, 7), 
-                     random.randrange(0, 7),
+                     random.randint(0, 7), 
+                     random.randint(0, 7),
                      glyph)
     return map
 

@@ -65,7 +65,7 @@ class SparseMap:
                     self._pieces.remove(obj)
                     return
 
-        def get_map(self):
+        def get_map(self)->list:
             ''' 
             Generate a map of this AREA. Map is full 
             of Glyphs.SPACE on error.
@@ -125,8 +125,8 @@ class SparseMap:
             area = self.get_map()
             if not dest:
                 while True:
-                    xpos = random.randrange(0,7)
-                    ypos = random.randrange(0,7)
+                    xpos = random.randint(0,7)
+                    ypos = random.randint(0,7)
                     if area[xpos][ypos] == Glyphs.SPACE:
                         self.plot_glyph(xpos, ypos, glyph)
                         return xpos, ypos                    
@@ -190,7 +190,7 @@ class SparseMap:
         '''
         names = list(TrekStrings.AREA_NAMES)
         for num, area in enumerate(self.areas(),1):
-            index = random.randint(0, len(names) - 1)
+            index = random.randrange(0, len(names))
             area.name = names[index]
             area.number = num
             del names[index]

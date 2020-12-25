@@ -4,6 +4,7 @@ import random
 from MapGame import *
 from AbsShip import *
 from Points import *
+from Difficulity import Probabilities
 
 class Calc():
 
@@ -36,11 +37,11 @@ class Calc():
             game.display("Enterprise successfully docked with starbase.")
             game.display()
         else:
-            if game.game_map.klingons > 0:
+            if game.game_map.count_area_klingons() > 0:
                 ShipKlingon.attack_if_you_can(game)
                 game.display()
             elif not game.enterprise.repair(game):
-                game.enterprise.damage(game, -1)
+                game.enterprise.damage(game, Probabilities.LRS)
 
     @staticmethod
     def warp_navigation(game):
@@ -80,11 +81,11 @@ class Calc():
             game.display("Enterprise successfully docked with starbase.")
             game.display()
         else:
-            if game.game_map.klingons > 0:
+            if game.game_map.count_area_klingons() > 0:
                 ShipKlingon.attack_if_you_can(game)
                 game.display()
             elif not game.enterprise.repair(game):
-                game.enterprise.damage(game, -1)
+                game.enterprise.damage(game, Probabilities.RANDOM)
 
 
     @staticmethod
@@ -107,15 +108,11 @@ class Calc():
         game.display()
         kships = game.game_map.get_area_klingons()
         if len(kships) == 0:
-            game.display("There are no enemies in this quadrant.")
+            game.display("There are no enemies in this sector.")
             return
 
         game.display("Enemies:")
         for ship in kships:
             game.display(f"\tKlingon [{ship.xpos},{ship.ypos}].")
         game.display()
-
-
-
-
 

@@ -3,7 +3,7 @@ import random
 
 import Glyphs
 from Quips import Quips
-from Quadrant import Quadrant
+from Sector import Sector
 
 class AbsShip(abc.ABC):
     ''' The first step, into a much larger universe ... '''
