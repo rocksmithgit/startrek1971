@@ -9,6 +9,29 @@ from Difficulity import Probabilities
 class Calc():
 
     @staticmethod
+    def surrounding(pos):
+        '''
+        Return the complete set of
+        points surrounding a piece.
+        Sanity checking is not performed.
+        '''
+        results = []
+        if pos:
+            above = pos.ypos - 1
+            below = pos.ypos + 1
+            left  = pos.xpos - 1
+            right = pos.xpos + 1
+            results.append([left, above])
+            results.append([right, below])
+            results.append([left, below])
+            results.append([right, above])
+            results.append([pos.xpos, above])
+            results.append([pos.xpos, below])
+            results.append([left, pos.ypos])
+            results.append([right, pos.ypos])
+        return results
+
+    @staticmethod
     def distance(x1, y1, x2, y2):
         x = x2 - x1
         y = y2 - y1

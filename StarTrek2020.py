@@ -39,10 +39,11 @@ class Game(Con):
         self.enterprise.docked = False
         for p in area._pieces:
             if p.glyph == Glyphs.STARBASE:
-                if p.xpos + 1 == pos.xpos or p.ypos + 1 == pos.ypos or \
-                    p.xpos - 1 == pos.xpos or p.ypos - 1 == pos.ypos:
-                        self.enterprise.docked = True
-                        ShipStarbase.dock_enterprise(self.enterprise)
+                for point in Calc.surrounding(pos):
+                    if  p.xpos == point[0] and \
+                        p.ypos == point[1]:
+                            self.enterprise.docked = True
+                            ShipStarbase.dock_enterprise(self.enterprise)
         if was_docked and self.enterprise.docked == False:
             ShipStarbase.launch_enterprise(self.enterprise)
         return pos
@@ -80,7 +81,6 @@ class Game(Con):
                 if not self.command_prompt():
                     break
         except ErrorEnterpriseCollision as ex:
-            game.display()
             if ex.glyph == Glyphs.KLINGON:
                 self.display("You flew into a KLINGON!")
             if ex.glyph == Glyphs.STARBASE:
