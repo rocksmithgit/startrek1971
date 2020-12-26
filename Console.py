@@ -47,3 +47,5 @@ class Con(abs_display):
 if __name__ == '__main__':
     con = Con()
     con.display("Testing!")
+    con.show_banner(["Testing, too!"])
+    con.show_banner(["Testing", " .......... too!"])

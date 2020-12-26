@@ -3,12 +3,15 @@ import abc
 class abs_display(abc.ABC):
     '''
     The plan is to have several places to 
-    display information. The goal is to 
-    use only one display, to display a 
-    certain type of message. Networked
-    screens would also be a great idea.
-    Logging would be in there somewhere,
-    as well.
+    display information. The idea is to 
+    use only one display to show a certain 
+    type of message. 
+    
+    Networked screens would (let alone game 
+    play)would also be a great idea.
+
+    Event logging would be in there somewhere
+    as well?
     '''
 
     ST_DEFAULT = 'd'
@@ -26,9 +29,28 @@ class abs_display(abc.ABC):
     def display(self, message):
         pass
 
-
     def show_strings(self, string_list):
+        '''
+        Enumerate an array of strings into 
+        self.display.
+        '''
         for string in string_list:
             self.display(string)
         self.display()
+
+    def show_banner(self, string_list, star = '*'):
+        '''
+        Enumerate an array of strings into a 
+        single-character self.display box.
+        '''
+        if not star:
+            star = '*'
+        star = star[0]
+        sz = len(max(string_list, key=len))
+        max_ = sz + 4
+        self.display(star * max_)
+        for str_ in string_list:
+            self.display(star + ' ' + str_.center(sz) + ' ' + star)
+        self.display(star * max_)
+        return sz
 
