@@ -137,7 +137,6 @@ class SparseMap:
         @staticmethod
         def clone(piece):
             ''' Copy a piece. '''
-            ''' Copy a piece. '''
             return SparseMap.Area.Piece(piece.xpos, piece.ypos, piece.glyph)
 
     def __init__(self):

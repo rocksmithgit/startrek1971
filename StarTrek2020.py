@@ -24,6 +24,15 @@ class Game(Con):
         self.destroyed = False
 
     def move_to(self, dest):
+        '''
+        Move the player to a nav, or a sub,
+        destination. Handles docking, random 
+        warp-in placement, as well as deliberate
+        collisions / rammming.
+        
+        Returns final resting coordinate on success.
+        Raises ErrorEnterpriseCollision on yikes.
+        '''
         pos = self.game_map._go_to(dest)
         area = self.game_map.pw_area()
         was_docked = self.enterprise.docked
@@ -38,9 +47,9 @@ class Game(Con):
             ShipStarbase.launch_enterprise(self.enterprise)
         return pos
 
-    def game_over(self):
+    def game_on(self):
         '''
-        Check to see if the game is over.
+        See if the game is still running.
         '''
         running = self.enterprise.energy > 0 and not \
         self.destroyed and self.game_map.game_klingons > 0 and \
@@ -48,6 +57,9 @@ class Game(Con):
         return running
 
     def run(self):
+        '''
+        The game loop - runs until the game is over.
+        '''
         self.show_strings(TrekStrings.LOGO_TREKER)
         game.star_date = random.randint(2250, 2300)
         game.time_remaining = random.randint(40, 45)
@@ -64,12 +76,10 @@ class Game(Con):
         self.show_strings(TrekStrings.HELM_CMDS)
         running = True
         try:
-            while running:
-                self.command_prompt()
-                if not self.game_over():
-                    Stats.show_exit_status(game)
+            while self.game_on():
+                if not self.command_prompt():
+                    break
         except ErrorEnterpriseCollision as ex:
-            Stats.show_exit_status(game)
             game.display()
             if ex.glyph == Glyphs.KLINGON:
                 self.display("You flew into a KLINGON!")
@@ -79,7 +89,10 @@ class Game(Con):
                 self.display("You flew into a STAR?")
             self.destroyed = True
         game.display()
-        self.display(Quips.jibe_fatal_mistake())
+        Stats.show_exit_status(game)
+        game.display()
+        if self.destroyed == True:
+            self.display(Quips.jibe_fatal_mistake())
         game.display()
         game.display(';-)')
         return False
@@ -104,9 +117,10 @@ class Game(Con):
         elif command == "com":
             Control.computer(game)
         elif command.startswith('qui') or command.startswith('exi'):
-            exit()
+            return False
         else:
             self.show_strings(TrekStrings.HELM_CMDS)
+        return True
 
     def print_mission(self):
         self.display("Mission: Destroy {0} Klingon ships in {1} stardates with {2} starbases.".format(

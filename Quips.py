@@ -42,40 +42,51 @@ DEFEAT_SUFFIX = [
     " crew is spaced.",
     " crew is recycled.",
     " crew is recovered.",
-    " yells: 'Thy mother mates poorly!'",
-    " snarls: 'Lucky shot.'",
-    " laughs: 'You'll not do THAT again!'",
+    " yells: 'thy mother mates poorly!'",
+    " snarls: 'lucky shot.'",
+    " laughs: 'you'll not do THAT again!'",
     " says nothing.",
-    " screams: 'Thy father is a Targ!'",
-    " yells: 'Your parents eat bats!'",
-    " snarls: 'Thy people eat vermin!'",
-    " yells: 'May you create social disease!'",
-    " curses: 'Thy fathers spreadeth pox!'",
-    " yells: 'Your mother is progressive!'",
+    " screams: 'thy father is a Targ!'",
+    " yells: 'thine family eats bats!'",
+    " snarls: 'thine people eat vermin!'",
+    " curses: 'thy fathers spreadeth pox!'",
+    " yells: 'thy mother is progressive!'",
     ]
 MISTAKES = [
     "... the crew was not impressed ...",
     "... that's going to leave a mark ...",
-    "... next time, remember to 'carry the 1'? ...",
+    "... next time carry the 1?",
     "... math lives matter ...",
-    "... that's coming out of your paycheck ...",
+    "... its coming out of your pay ...",
     "... this is not a bumper car ...",
-    "... life can be tough, that way ...",
-    "... who ordered THAT take-out ...",
+    "... life can be tough that way ...",
+    "... who ordered THAT take-out?",
     "... random is, what random does ...",
     "... you've got their attention ...",
-    "... next time, just text them ...",
+    "... next time, just text them?",
     "... how rude!",
     "... yes, karma CAN hurt ...",
     "... life is but a dream!",
     "... game over.",
-    "... they will talk about this one for years.",
-    "... who is going to pay for this?",
+    "... starfleet will talk about this for years.",
+    "... who is going to pay for that?",
     "... galactic insurance premiums skyrocket ...",
     "... captain goes down with the starship ...",
     "... we'll notify your next-of-kin.",
     "... that was not in the script ...",
     "... you never did THAT in the simulator ...",
+    ]
+
+QUITS = [
+    "-Let's call it a draw?",
+    "-You call yourself a 'Trekkie?",
+    "Kobayashi Maru. Python for you?",
+    "(Spock shakes his head)",
+    "(Duras, stop laughing!)",
+    "(... and the Klingons rejoice)",
+    "(... and our enemies, rejoice)",
+    "Kobayashi Maru... Got Python?",
+    "(Kirk shakes his head)",
     ]
 
 class Quips():
@@ -85,6 +96,10 @@ class Quips():
         prand = random.randrange(0, len(prefix))
         srand = random.randrange(0, len(suffix))
         return prefix[prand] + noun + suffix[srand]
+
+    @staticmethod
+    def jibe_quit():
+        return QUITS[random.randrange(0, len(QUITS))]
     
     @staticmethod
     def jibe_damage(noun):

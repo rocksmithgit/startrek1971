@@ -1,4 +1,5 @@
 import Glyphs
+from Quips import Quips
 
 class Stats():
     '''
@@ -33,23 +34,18 @@ class Stats():
     @staticmethod
     def show_exit_status(game):
         if game.destroyed:
-            msg = "MISSION FAILED: ENTERPRISE DESTROYED!!!"
-            game.display('!' * len(msg))
-            game.display(msg)
-            game.display('!' * len(msg))
+            msg = "MISSION FAILED: SHIP DESTROYED"
+            game.show_banner([msg], '!')
         elif game.enterprise.energy == 0:
-            msg = "MISSION FAILED: ENTERPRISE RAN OUT OF ENERGY."
-            game.display('!' * len(msg))
-            game.display(msg)
-            game.display('!' * len(msg))
+            msg = "MISSION FAILED: OUT OF ENERGY."
+            game.show_banner([msg], '!')
         elif game.game_map.game_klingons == 0:
-            msg = "MISSION ACCOMPLISHED: ALL ENEMY SHIPS DESTROYED. WELL DONE!!!"
-            game.display('!' * len(msg))
-            game.display(msg)
-            game.display('!' * len(msg))
+            msg = "MISSION ACCOMPLISHED: ENEMIES DESTROYED. WELL DONE!"
+            game.show_banner([msg])
         elif game.time_remaining == 0:
-            msg = "MISSION FAILED: ENTERPRISE RAN OUT OF TIME."
-            game.display('!' * len(msg))
-            game.display(msg)
-            game.display('!' * len(msg))
+            msg = "MISSION FAILED: OUT OF TIME."
+            game.show_banner([msg], '!')
+        else:
+            ary = ["::::::::: MISSION ABORTED :::::::::", Quips.jibe_quit()]
+            game.show_banner(ary, ':')
 
