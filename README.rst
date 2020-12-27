@@ -20,7 +20,7 @@ So far:
 
 Video: https://youtu.be/TpmtCLOJ5Uw
 
-Original authors did an excellent job here - made the modernization a WHOLE LOT easier!
+Original authors did an excellent job - made the modernization a WHOLE LOT easier!
 
 Feel free to do a 'Kirk here - Kobayashi Maru?
 
