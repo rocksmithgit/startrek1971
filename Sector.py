@@ -10,7 +10,6 @@ class Sector():
         self.area_klingons = aliens
         self.area_stars = stars
         self.area_starbases = starbases
-        self.scanned = True # meh
 
     def is_null(self):
         return self.num == -1

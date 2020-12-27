@@ -20,7 +20,7 @@ class SparseMap:
         A minimalist collection of Area-plotted Glyphs. 
         Area numbers are 1's based.
         Area plotting is 0's based.
-        Names are Trekian.
+        Area names are Trekian.
         '''
         class Piece:
             '''
@@ -37,7 +37,6 @@ class SparseMap:
             '''
             self.name = ""
             self.number = -1
-            self.scanned = False
             self._pieces = []
 
         def is_null(self):
@@ -47,15 +46,14 @@ class SparseMap:
             dum = Area()
             return dum.name == self.name and \
                 dum.number == self.number and \
-                dum.scanned == self.scanned and \
                 len(dum.objs) == len(self._pieces)
 
         def is_empty(self):
             ''' Checks to see if the Area has anything ...'''
             return len(self._pieces) == True
 
-        def items(self):
-            ''' Items in the Area ...'''
+        def item_count(self)->int:
+            ''' The number of pieces / items in the randint ...'''
             return len(self._pieces)
 
         def remove(self, xpos, ypos):
@@ -67,7 +65,7 @@ class SparseMap:
 
         def get_map(self)->list:
             ''' 
-            Generate a map of this AREA. Map is full 
+            Generate a map of this randint. Map is full 
             of Glyphs.SPACE on error.
             '''
             results = [[Glyphs.SPACE for _ in range(8)] for _ in range(8)]
@@ -89,7 +87,12 @@ class SparseMap:
                 return False
             return True
 
-        def get_data(self, glyph):
+        def query(self, glyph):
+            '''
+            Clone each Piece for a glyph into a new 
+            collection. Changes to the results WILL NOT 
+            affect the glyph in the AREA.
+            '''
             results = []
             for p in self._pieces:
                 if p.glyph == glyph:
@@ -140,10 +143,17 @@ class SparseMap:
             return SparseMap.Area.Piece(piece.xpos, piece.ypos, piece.glyph)
 
     def __init__(self):
+        '''
+        Create the uninitialized REGION. Use .init() to
+        populate same with AREAs.
+        '''
         self.initalized = False
         self._map = [[[y,x] for y in range(8)] for x in range(8)]
 
     def init(self, reset=False):
+        '''
+        Fill a newly-created map with a set of randomly-named AREAs.
+        '''
         if not reset and self.initalized:
             return
         for xx, row in enumerate(self._map):

@@ -12,6 +12,10 @@ import MapSparse
 class GameMap(MapSparse.SparseMap):
 
     def __init__(self):
+        '''
+        Prepare a 'Trekian GameMap for future 
+        initialization.
+        '''
         super().__init__()
         self.sector = -1
         self.xpos = self.ypos = -1
@@ -179,9 +183,6 @@ class GameMap(MapSparse.SparseMap):
             self.game_klingons  += area.count_glyphs(Glyphs.KLINGON)
             self.game_starbases += area.count_glyphs(Glyphs.STARBASE)
             self.game_stars     += area.count_glyphs(Glyphs.STAR)
-        area = self.get_pw_sector()
-        area = self.get_pw_sector()
-
 
     def remove_area_items(self, piece_array)->None:
         '''
@@ -199,7 +200,7 @@ class GameMap(MapSparse.SparseMap):
         '''
         results = []
         area = self.pw_area()
-        for data in area.get_data(Glyphs.KLINGON):
+        for data in area.query(Glyphs.KLINGON):
             ship = ShipKlingon()
             ship.from_map(data.xpos, data.ypos)
             results.append(ship)
@@ -207,8 +208,8 @@ class GameMap(MapSparse.SparseMap):
 
     def get_area_objects(self)->list:
         '''
-        Return the actual objects, as located in the Area. 
-        NOTE: Changes to this collection will update Area
+        Return the actual pieces, as maintained in the Area. 
+        WARNING: Changes to this collection WILL update Area
         content.
         '''
         area = self.pw_area()
@@ -228,7 +229,7 @@ class GameMap(MapSparse.SparseMap):
         '''
         results = []
         for area in self.areas():
-            for piece in area.get_data(glyph):
+            for piece in area.query(glyph):
                 results.append([area, piece])
         return results
 
@@ -247,7 +248,8 @@ class GameMap(MapSparse.SparseMap):
         return area.get_map()
 
     def _go_to(self, dest):
-        ''' Either a WARP ~or~ a SUBSPACE destination is ok.
+        ''' 
+        Either a WARP ~or~ a SUBSPACE destination is ok.
         Place the main player (Enterprise, for now) into the Area.
         Returns the final, effective, player location.
         '''
@@ -274,6 +276,12 @@ class GameMap(MapSparse.SparseMap):
         return dest
 
     def randomize(self, bases=None, stars=None, aliens=None)->None:
+        '''
+        Randomly place the inventoried items into the map.
+        If no bases ot aliens are specified, a random number
+        will be selected. Stars are not required. Not having 
+        any stars is ok.
+        '''
         if not aliens:
             aliens = random.randint(5, 10)
         if not bases:

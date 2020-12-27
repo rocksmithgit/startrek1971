@@ -3,8 +3,8 @@
 import TrekStrings
 from Console import Con
 from ShipKlingon import ShipKlingon
-from ShipStarbase import ShipStarbase
 from ShipEnterprise import ShipEnterprise
+from ShipStarbase import ShipStarbase
 from Calculators import Calc
 from Controls import Control
 from Reports import Stats
@@ -17,6 +17,7 @@ class Game(Con):
 
     def __init__(self):
         self.is_testing = False
+        self.is_cloked  = False # unable to be fired-upon
         self.game_map = GameMap()
         self.enterprise = ShipEnterprise()
         self.star_date = 0
@@ -80,6 +81,12 @@ class Game(Con):
             while self.game_on():
                 if not self.command_prompt():
                     break
+                if self.is_testing:
+                    self.destoryed = False
+                    ShipStarbase.dock_enterprise(self.enterprise)
+                    ShipStarbase.launch_enterprise(self.enterprise)
+                    self.enterprise.shield_level = 1000
+                    
         except ErrorEnterpriseCollision as ex:
             if ex.glyph == Glyphs.KLINGON:
                 self.display("You flew into a KLINGON!")
@@ -94,7 +101,6 @@ class Game(Con):
         if self.destroyed == True:
             self.display(Quips.jibe_fatal_mistake())
         game.display()
-        game.display(';-)')
         return False
 
     def command_prompt(self):

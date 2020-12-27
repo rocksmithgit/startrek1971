@@ -172,5 +172,3 @@ class Control():
         game.display()
         game.enterprise.damage(game, Probabilities.PHOTON)
 
-
-

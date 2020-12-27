@@ -40,8 +40,8 @@ class Stats():
             msg = "MISSION FAILED: OUT OF ENERGY."
             game.show_banner([msg], '!')
         elif game.game_map.game_klingons == 0:
-            msg = "MISSION ACCOMPLISHED: ENEMIES DESTROYED. WELL DONE!"
-            game.show_banner([msg])
+            msg = "MISSION ACCOMPLISHED","ENEMIES DESTROYED","WELL DONE!"
+            game.show_banner(msg)
         elif game.time_remaining == 0:
             msg = "MISSION FAILED: OUT OF TIME."
             game.show_banner([msg], '!')

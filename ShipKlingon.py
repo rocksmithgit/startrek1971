@@ -22,7 +22,7 @@ class ShipKlingon(AbsShip):
         '''
         IF you ever find yourself in the AREA, then have at USS?
         '''
-        if game.is_testing:
+        if game.is_cloked:
             return False
         from Calculators import Calc
         kships = game.game_map.get_area_klingons()
