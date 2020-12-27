@@ -1,5 +1,10 @@
-The original free-and-open StarTrek console game was THE most played game of the day .... back in the 1970's! 
+================
+ StarTrek 1971 - 2020
+================
 
+The original free-and-open Star Trek console game was THE most played game of the day .... back in the 1970's! 
+
+Originally written in B.A.S.I.C, from C/C++, FORTRAN, C#, Python 2 ... and now Python 3, many have been inspired to re-create, improve, and / or simply experiment with the concept.
 
 So far:
 
@@ -17,8 +22,14 @@ Video: https://youtu.be/TpmtCLOJ5Uw
 
 Original authors did an excellent job here - made the modernization a WHOLE LOT easier!
 
+Feel free to do a 'Kirk here - Kobayashi Maru?
 
--- Nagy
+
+
+Enjoy the journey,
+
+
+-- Randall Nagy
 
 Original:
 
