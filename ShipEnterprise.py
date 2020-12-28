@@ -38,25 +38,25 @@ class ShipEnterprise(AbsShip):
             item = random.randint(0, 6)
         if item == 0:
             self.navigation_damage = damage
-            game.display(Quips.jibe_damage('Warp Engines'))
+            game.display(Quips.jibe_damage('warp engine'))
         elif item == 1:
             self.short_range_scan_damage = damage
-            game.display(Quips.jibe_damage('Short Range Scanner'))
+            game.display(Quips.jibe_damage('short range scanner'))
         elif item == 2:
             self.long_range_scan_damage = damage
-            game.display(Quips.jibe_damage('Long Range Scanner'))
+            game.display(Quips.jibe_damage('long range scanner'))
         elif item == 3:
             self.shield_control_damage = damage
-            game.display(Quips.jibe_damage('Shield Controls'))
+            game.display(Quips.jibe_damage('shield control'))
         elif item == 4:
             self.computer_damage = damage
-            game.display(Quips.jibe_damage('Main Computer'))
+            game.display(Quips.jibe_damage('main computer'))
         elif item == 5:
             self.photon_damage = damage
-            game.display(Quips.jibe_damage('Photon Torpedo Controls'))
+            game.display(Quips.jibe_damage('torpedo controller'))
         elif item == 6:
             self.phaser_damage = damage
-            game.display(Quips.jibe_damage('Phasers'))
+            game.display(Quips.jibe_damage('phaser'))
         game.display()
 
     def repair(self, game):
@@ -109,7 +109,7 @@ class ShipEnterprise(AbsShip):
 
     def short_range_scan(self, game):
         if self.short_range_scan_damage > 0:
-            game.display(Quips.jibe_damage('Short Ranged Scanner'))
+            game.display(Quips.jibe_damage('short ranged scanner'))
             game.display()
         else:
             quad = game.game_map.get_pw_sector()
@@ -120,7 +120,7 @@ class ShipEnterprise(AbsShip):
 
     def long_range_scan(self, game):
         if self.long_range_scan_damage > 0:
-            game.display(Quips.jibe_damage('Long Ranged Scanner'))
+            game.display(Quips.jibe_damage('long ranged scanner'))
             game.display()
             return
 

@@ -39,7 +39,7 @@ class Control():
     @staticmethod
     def phasers(game):
         if game.enterprise.phaser_damage > 0:
-            game.display(Quips.jibe_damage("phasers"))
+            game.display(Quips.jibe_damage("phaser"))
             game.display()
             return
         kships = game.game_map.get_area_klingons()

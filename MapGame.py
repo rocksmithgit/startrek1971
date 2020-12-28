@@ -22,7 +22,7 @@ class GameMap(MapSparse.SparseMap):
         self.game_stars      = -1
         self.game_klingons   = -1
         self.game_starbases  = -1
-        self.last_nav = None
+        self.last_nav = Dest()
         
     def place(self, takers):
         ''' 
@@ -251,11 +251,11 @@ class GameMap(MapSparse.SparseMap):
         ''' 
         Either a WARP ~or~ a SUBSPACE destination is ok.
         Place the main player (Enterprise, for now) into the Area.
-        Returns the final, effective, player location.
+        Returns the final, effective, arrival Dest().
         '''
         if not dest:
             return
-        if self.last_nav:
+        if not self.last_nav.is_null():
             self.enterprise_out()
         pos = None
         if isinstance(dest, WarpDest):
@@ -263,6 +263,8 @@ class GameMap(MapSparse.SparseMap):
                 self.sector = dest.sector
             dest.sector = self.sector
             pos = self.enterprise_in() # SAFE WARP-IN!
+            self.last_nav.sector = dest.sector
+            self.last_nav.warp = dest.warp
         else:
             if dest.xpos != -1:
                 self.xpos = dest.xpos
@@ -270,10 +272,13 @@ class GameMap(MapSparse.SparseMap):
             dest.xpos = self.xpos
             dest.ypos = self.ypos
             pos = self.enterprise_in(dest) # CAPIN' KNOWS BEST?
-        self.xpos = dest.xpos = pos[0]
-        self.ypos = dest.ypos = pos[1]
-        self.last_nav = dest
-        return dest
+            dest.xpos = pos[0]
+            dest.ypos = pos[1]
+        self.xpos = pos[0]
+        self.ypos = pos[1]
+        self.last_nav.xpos = pos[0]
+        self.last_nav.ypos = pos[1]
+        return self.last_nav.clone()
 
     def randomize(self, bases=None, stars=None, aliens=None)->None:
         '''

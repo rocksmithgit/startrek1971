@@ -73,3 +73,36 @@ class SubDest():
                 pass
         return None
 
+
+class Dest(WarpDest, SubDest):
+
+    def __init__(self):
+        WarpDest.__init__(self)
+        SubDest.__init__(self)
+
+    def is_null(self):
+        return self.xpos == 0 and \
+            self.sector == -1
+
+    def clone(self):
+        result = Dest()
+        result.xpos = self.xpos
+        result.ypos = self.ypos
+        result.sector = self.sector
+        result.warp = self.warp
+        return result
+
+
+if __name__ == '__main__':
+    test = Dest()
+    assert(test.is_null() == True)
+    test.xpos = test.ypos = 123
+    test.sector = 22
+    test.warp = 22
+    assert(test.is_null() == False)
+    clone = test.clone()
+    assert(clone.sector == test.sector)
+    assert(clone.warp == test.warp)
+    assert(clone.xpos == test.xpos)
+    assert(clone.ypos == test.ypos)
+

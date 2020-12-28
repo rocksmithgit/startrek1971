@@ -45,8 +45,18 @@ class Calc():
             game.display()
             return
 
+
+        dist = Calc.distance(game.game_map.xpos, game.game_map.ypos,
+                             dest_sys.xpos, dest_sys.ypos)
+        energy_required = int(dist)
+        if energy_required >= game.enterprise.energy:
+            game.display("Insufficient energy move to that location.")
+            game.display()
+            return
+
         game.display()
         game.display("Sub-light engines engaged.")
+        game.enterprise.energy -= energy_required
         game.display()
         game.move_to(dest_sys)
 
@@ -80,6 +90,9 @@ class Calc():
             return
 
         game.display()
+
+        if dest_sys.warp < 1:
+            dest_sys.warp = 1
 
         dist = dest_sys.warp * 8
         energy_required = int(dist)
