@@ -24,6 +24,8 @@ Original authors did an excellent job - made the modernization a WHOLE LOT easie
 
 Feel free to do a 'Kirk here - Kobayashi Maru?
 
+https://www.udemy.com/course/python-1000/ 
+
 
 
 Enjoy the journey,
