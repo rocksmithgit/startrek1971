@@ -1,3 +1,4 @@
+import Glyphs
 from AbsShip import AbsShip
 
 class ShipStarbase(AbsShip):
@@ -25,5 +26,3 @@ class ShipStarbase(AbsShip):
     @staticmethod
     def launch_enterprise(ship):
         ship.docked = False
-
-
