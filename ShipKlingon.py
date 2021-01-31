@@ -1,4 +1,5 @@
 import random
+import Glyphs
 from AbsShip import AbsShip
 
 class ShipKlingon(AbsShip):
@@ -48,7 +49,3 @@ class ShipKlingon(AbsShip):
                         return True
             return True
         return False
-
-
-
-
