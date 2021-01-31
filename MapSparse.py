@@ -43,7 +43,7 @@ class SparseMap:
             '''
             See if this AREA has anything important.
             '''
-            dum = Area()
+            dum = SparseMap.Area()
             return dum.name == self.name and \
                 dum.number == self.number and \
                 len(dum.objs) == len(self._pieces)
@@ -75,7 +75,7 @@ class SparseMap:
 
         def __str__(self):
             result = ''
-            for line in get_map():
+            for line in self.get_map():
                 result += ''.join(line)
                 result += '\n'
             return result
