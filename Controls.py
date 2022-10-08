@@ -10,6 +10,7 @@ from Calculators import Calc
 from Reports import Stats
 from Quips import Quips
 from Difficulity import Probabilities
+from FontEffects import colours
 
 class Control():
 
@@ -111,6 +112,10 @@ class Control():
         else:
             game.enterprise.energy += int(transfer)
             game.enterprise.shield_level -= int(transfer)
+        if game.enterprise.shield_level - int(transfer) == 0:
+            game.display(colours.fg.green + "SHIELDS UP!" + colours.reset)
+        elif game.enterprise.shield_level == 0:
+            game.display(colours.fg.red + "SHIELDS DOWN!" + colours.reset)
         game.display("Shield strength is now {0}. Energy level is now {1}.".format(game.enterprise.shield_level, game.enterprise.energy))
         game.display()
         game.enterprise.damage(game, Probabilities.SHIELDS)
@@ -136,6 +141,11 @@ class Control():
             return
         game.display()
         game.display("Photon torpedo fired...")
+        positions = [x for x in range(12)]
+        for pos in positions:
+            game.display_moving_photon(Glyphs.ENTERPRISE + " "*pos + Glyphs.PHOTON + " "*(12-pos) + Glyphs.KLINGON)
+        game.display_reset
+
         game.enterprise.photon_torpedoes -= 1
         hit = False
         for ship in game.game_map.get_area_objects():
