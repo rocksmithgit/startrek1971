@@ -1,7 +1,11 @@
+from FontEffects import colours
+import random
+
 SPACE       = "   "
-STAR        = " * "
-STARBASE    = ">S<"
-ENTERPRISE  = "<E>"
-KLINGON     = "+K+"
+STAR        = colours.fg.orange + " * " + colours.reset
+STARBASE    = colours.fg.blue + ">S<" + colours.reset
+ENTERPRISE  = colours.fg.green + "<E>" + colours.reset
+KLINGON     = colours.fg.red + "+K+" + colours.reset
+PHOTON      = colours.fg.random + "*" + colours.reset
 
 GLYPHS = SPACE, STARBASE, KLINGON, ENTERPRISE
