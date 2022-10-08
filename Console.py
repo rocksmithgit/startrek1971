@@ -1,5 +1,7 @@
 from AbsDisplay import abs_display
 from Points import *
+import sys
+from time import sleep
 
 class Con(abs_display):
     '''
@@ -11,6 +13,14 @@ class Con(abs_display):
 
     def display(self, message = ''):
         print(message)
+
+    def display_moving_photon(self, message = ''):
+        print(f"\r{message}", end='')
+        sys.stdout.flush()
+        sleep(0.15)
+
+    def display_reset(self):
+        print(end='\n')
 
     def read(self, prompt=''):
         return input(prompt)
