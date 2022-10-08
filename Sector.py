@@ -1,4 +1,5 @@
 import Glyphs
+from FontEffects import colours
 
 class Sector():
     def __init__(self, num=-1, name='', 
@@ -30,17 +31,17 @@ class Sector():
 
     @staticmethod                
     def display_area(game, sector):
-        game.enterprise.condition = "GREEN"
+        game.enterprise.condition = colours.fg.green + "GREEN" + colours.reset
         if sector.area_klingons > 0:
-            game.enterprise.condition = "RED"
+            game.enterprise.condition = colours.fg.red + "RED" + colours.reset
         elif game.enterprise.energy < 300:
-            game.enterprise.condition = "YELLOW"
+            game.enterprise.condition = colours.fg.yellow + "YELLOW" + colours.reset
 
         sb =   "     a  b  c  d  e  f  g  h \n"
         sb += f"    -=--=--=--=--=--=--=--=-             Sector: {sector.name}\n"
         info = list()
         info.append(f"             Number: [{sector.number}]\n")
-        info.append(f"           Hazzards: [{sector.area_stars + sector.area_klingons}]\n")
+        info.append(f"            Hazards: [{sector.area_stars + sector.area_klingons}]\n")
         info.append(f"           Stardate: {game.star_date}\n")
         info.append(f"          Condition: {game.enterprise.condition}\n")
         info.append(f"             Energy: {game.enterprise.energy}\n")
@@ -58,12 +59,12 @@ class Sector():
 
         if sector.area_klingons > 0:
             game.display()
-            game.display("Condition RED: Klingon ship{0} detected.".format("" if sector.area_klingons == 1 else "s"))
+            game.display("Condition " + colours.fg.red + "RED" + colours.reset + ": Klingon ship{0} detected.".format("" if sector.area_klingons == 1 else "s"))
             if game.enterprise.shield_level == 0 and not game.enterprise.docked:
                 game.display("Warning: Shields are down.")
         elif game.enterprise.energy < 300:
             game.display()
-            game.display("Condition YELLOW: Low energy level.")
-            game.enterprise.condition = "YELLOW"
+            game.display("Condition " + colours.fg.yellow + "YELLOW" + colours.reset + ": Low energy level.")
+            game.enterprise.condition = colours.fg.yellow + "YELLOW" + colours.reset
 
 
