@@ -1,4 +1,8 @@
-﻿LOGO_TREKER = r"""
+﻿from FontEffects import colours
+
+LOGO_TREKER_PREFIX = [colours.fg.orange]
+LOGO_TREKER_SUFFIX = [colours.reset]
+LOGO_TREKER_TEXT = r"""
                ______ _______ ______ ______    _______ ______  ______ __  __ 
               / __  //__  __// __  // __  /   /__  __// __  / / ____// / / /
              / / /_/   / /  / /_/ // /_/ /      / /  / /_/ / / /__  / // /
@@ -6,13 +10,15 @@
            / /_/ /   / /  / / / // /\ \       / /  / /\ \  / /___ / /\ \
           /_____/   /_/  /_/ /_//_/  \_\     /_/  /_/  \_\/_____//_/  \_\
 
-                                     1971 - 2020     
+                                     1971 - 2020                                 """.split('\n')
+LOGO_TREKER_SHIP = r"""
                            ________________        _
                            \__(=======/_=_/____.--'-`--.___
                                       \ \   `,--,-.___.----'
                                     .--`\\--'../
                                    '---._____.|]""".split('\n')
-    
+
+LOGO_TREKER  = LOGO_TREKER_PREFIX + LOGO_TREKER_TEXT + LOGO_TREKER_SUFFIX + LOGO_TREKER_SHIP
 
 AREA_NAMES = [
     "Aaamazzara",
