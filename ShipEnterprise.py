@@ -5,6 +5,7 @@ from Sector import Sector
 from Difficulity import Probabilities
 import Glyphs
 from Quips import Quips
+from FontEffects import colours
 
 class ShipEnterprise(AbsShip):
 
@@ -12,7 +13,7 @@ class ShipEnterprise(AbsShip):
         super().__init__()
         self.energy = 0
         self.docked = False
-        self.condition = "GREEN"
+        self.condition = colours.fg.green + "GREEN"
         self.navigation_damage = 0
         self.short_range_scan_damage = 0
         self.long_range_scan_damage = 0
@@ -132,17 +133,23 @@ class ShipEnterprise(AbsShip):
         lines = []
         for peek in range(pw_sector-4, pw_sector + 5):
             quad = game.game_map.scan_sector(peek)
+#            print(quad.number)
             lines.append(f"SEC: {quad.number:>03}")
             lines.append(f"{Glyphs.KLINGON}: {quad.area_klingons:>03}")
             lines.append(f"{Glyphs.STARBASE}: {quad.area_starbases:>03}")
             lines.append(f"{Glyphs.STAR}: {quad.area_stars:>03}")
-        dots = '     +' + ('-' * 35) + '+'
+#            print(lines)
+        dots = '     +' + ('-' * 38) + '+'
         game.display(dots)
-        game.display('     |          LONG RANGE SCAN          |')
+        game.display('     |            LONG RANGE SCAN           |')
         game.display(dots)
         for ss in range(0,(len(lines)-1),12):
             for offs in range(4):
-                line = f'     | {lines[ss+offs]:<9} | {lines[ss+4+offs]:<9} | {lines[ss+8+offs]:<9} |'
+#                print(lines[ss+offs])
+#                print(lines[ss+4+offs])
+#                print(lines[ss+8+offs])
+                line = f'     |  {lines[ss+offs]:<08}  |  {lines[ss+4+offs]:<08}  |  {lines[ss+8+offs]:<08}  ' \
+                       f'|'
                 game.display(line)
             game.display(dots)
         game.display()
