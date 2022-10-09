@@ -3,18 +3,19 @@ from Points import *
 import sys
 from time import sleep
 
+
 class Con(abs_display):
-    '''
+    """
     The best place to start is by encapsulating the default
     display. Will add screen metadata for it all, later.
-    '''
+    """
     def __init__(self):
         super().__init__(abs_display.ST_CONSOLE)
 
-    def display(self, message = ''):
+    def display(self, message=''):
         print(message)
 
-    def display_moving_photon(self, message = ''):
+    def display_moving_photon(self, message=''):
         print(f"\r{message}", end='')
         sys.stdout.flush()
         sleep(0.15)
@@ -30,26 +31,26 @@ class Con(abs_display):
         try:
             value = float(text)
             return value
-        except:
+        except ValueError:
             pass
         return False
 
-    def read_xypos(self, prompt = "Location (alpha,num)"):
-        '''
+    def read_xypos(self, prompt="Location (alpha,num)"):
+        """
         Parse: [a-h], ypos 
                 or 
                 #,#  
            Return None on error
         Example: b,4 
-        '''
+        """
         text = input(prompt + ': ')
         return SubDest.parse(text)
 
-    def read_sector(self, prompt= "Helm: sector 1-64, speed 1.0-9.0?"):
+    def read_sector(self, prompt="Helm: sector 1-64, speed 1.0-9.0?"):
         text = input(prompt + ': ')
         return WarpDest.parse(text)
 
-    def read_xypos(self, prompt= "Helm: a-h, 1-8?"):
+    def read_xypos(self, prompt="Helm: a-h, 1-8?"):
         text = input(prompt + ': ')
         return SubDest.parse(text)
 

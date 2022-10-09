@@ -3,14 +3,16 @@ import MapGame
 import Glyphs
 from MapSparse import SparseMap
 
+
 def fill_map():
     map = SparseMap()
     map.init()
     for sector in range(1, 65):
         for xpos in range(8):
             for ypos in range(8):
-                assert(map.plot(sector,xpos,ypos,Glyphs.ENTERPRISE))
+                assert(map.plot(sector, xpos, ypos, Glyphs.ENTERPRISE))
     return map
+
 
 def define_map():
     map = SparseMap()
@@ -34,17 +36,13 @@ def define_map():
                      glyph)
     return map
 
+
 if __name__ == '__main__':
     map = fill_map()
-    for sect, area in enumerate(map.areas(),1):
+    for sect, area in enumerate(map.areas(), 1):
         assert(area.number == sect)
 
     for sector in map.areas():
         for line in sector.get_map():
             print(line, end='')
         print()
-
-
-
-
-

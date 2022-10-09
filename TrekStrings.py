@@ -1,5 +1,6 @@
 ﻿from FontEffects import colours
 
+
 LOGO_TREKER_PREFIX = [colours.fg.orange]
 LOGO_TREKER_SUFFIX = [colours.reset]
 LOGO_TREKER_TEXT = r"""
@@ -18,7 +19,7 @@ LOGO_TREKER_SHIP = r"""
                                     .--`\\--'../
                                    '---._____.|]""".split('\n')
 
-LOGO_TREKER  = LOGO_TREKER_PREFIX + LOGO_TREKER_TEXT + LOGO_TREKER_SUFFIX + LOGO_TREKER_SHIP
+LOGO_TREKER = LOGO_TREKER_PREFIX + LOGO_TREKER_TEXT + LOGO_TREKER_SUFFIX + LOGO_TREKER_SHIP
 
 AREA_NAMES = [
     "Aaamazzara",

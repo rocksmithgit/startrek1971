@@ -7,6 +7,7 @@ import Glyphs
 from Quips import Quips
 from FontEffects import colours
 
+
 class ShipEnterprise(AbsShip):
 
     def __init__(self):
@@ -29,9 +30,9 @@ class ShipEnterprise(AbsShip):
         return Glyphs.ENTERPRISE
 
     def damage(self, game, item):
-        '''
+        """
         Damage the Enterprise.
-        '''
+        """
         if not Probabilities.should_damage_enterprise(game, item):
             return
         damage = Probabilities.calc_damage(game, item)
@@ -61,9 +62,9 @@ class ShipEnterprise(AbsShip):
         game.display()
 
     def repair(self, game):
-        '''
+        """
         Repair damage to the Enterprise.
-        '''
+        """
         if self.navigation_damage > 0:
             self.navigation_damage -= 1
             if self.navigation_damage == 0:
@@ -141,13 +142,11 @@ class ShipEnterprise(AbsShip):
         game.display(dots)
         game.display('     |            LONG RANGE SCAN           |')
         game.display(dots)
-        for ss in range(0,(len(lines)-1),12):
+        for ss in range(0, (len(lines)-1), 12):
             for offs in range(4):
-                line = f'     |  {lines[ss+offs]:<08}  |  {lines[ss+4+offs]:<08}  |  {lines[ss+8+offs]:<08}  ' \
-                       f'|'
+                line = f'     |  {lines[ss+offs]:<08}  |  {lines[ss+4+offs]:<08}  |  {lines[ss+8+offs]:<08}  |'
                 game.display(line)
             game.display(dots)
         game.display()
         if not game.enterprise.repair(game):
             game.enterprise.damage(game, Probabilities.SRS)
-

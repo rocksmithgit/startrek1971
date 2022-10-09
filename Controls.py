@@ -12,6 +12,7 @@ from Quips import Quips
 from Difficulity import Probabilities
 from FontEffects import colours
 
+
 class Control():
 
     @staticmethod
@@ -35,7 +36,6 @@ class Control():
             game.display("Invalid computer command.")
             game.display()
         game.enterprise.damage(game, Probabilities.COMPUTER)
-
 
     @staticmethod
     def phasers(game):
@@ -80,7 +80,6 @@ class Control():
             ShipKlingon.attack_if_you_can(game)
         game.display()
         game.enterprise.damage(game, Probabilities.PHASERS)
-
 
     def shields(game):
         game.display("--- Shield Controls ----------------")
@@ -181,4 +180,3 @@ class Control():
             ShipKlingon.attack_if_you_can(game)
         game.display()
         game.enterprise.damage(game, Probabilities.PHOTON)
-

@@ -1,25 +1,26 @@
 from math import sqrt
-import random
+#import random
 
 from MapGame import *
-from AbsShip import *
-from Points import *
+#from AbsShip import *
+#from Points import *
 from Difficulity import Probabilities
+
 
 class Calc():
 
     @staticmethod
     def surrounding(pos):
-        '''
+        """
         Return the complete set of
         points surrounding a piece.
         Sanity checking is not performed.
-        '''
+        """
         results = []
         if pos:
             above = pos.ypos - 1
             below = pos.ypos + 1
-            left  = pos.xpos - 1
+            left = pos.xpos - 1
             right = pos.xpos + 1
             results.append([left, above])
             results.append([right, below])
@@ -44,7 +45,6 @@ class Calc():
             game.display("Invalid course.")
             game.display()
             return
-
 
         dist = Calc.distance(game.game_map.xpos, game.game_map.ypos,
                              dest_sys.xpos, dest_sys.ypos)
@@ -123,7 +123,6 @@ class Calc():
             elif not game.enterprise.repair(game):
                 game.enterprise.damage(game, Probabilities.RANDOM)
 
-
     @staticmethod
     def show_starbase(game):
         game.display()
@@ -132,12 +131,12 @@ class Calc():
         if bases:
             game.display("Starbases:")
             for info in bases:
-                area = info[0]; base = info[1]
+                area = info[0]
+                base = info[1]
                 game.display(f"\tSector #{area.number} at [{base.xpos},{base.ypos}].")
         else:
             game.display("There are no Starbases.")
         game.display()
-
 
     @staticmethod
     def show_torp_targets(game):
@@ -151,4 +150,3 @@ class Calc():
         for ship in kships:
             game.display(f"\tKlingon [{ship.xpos},{ship.ypos}].")
         game.display()
-

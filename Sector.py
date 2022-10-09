@@ -1,6 +1,7 @@
 import Glyphs
 from FontEffects import colours
 
+
 class Sector():
     def __init__(self, num=-1, name='', 
                  aliens=-1, stars=-1, 
@@ -22,12 +23,12 @@ class Sector():
         name = area.name
         num = area.number
         map = area.get_map()
-        return Sector(num, name, 
-                        area.count_glyphs(Glyphs.KLINGON),
-                        area.count_glyphs(Glyphs.STAR),
-                        area.count_glyphs(Glyphs.STARBASE),
-                        map)
-
+        return Sector(num,
+                      name,
+                      area.count_glyphs(Glyphs.KLINGON),
+                      area.count_glyphs(Glyphs.STAR),
+                      area.count_glyphs(Glyphs.STARBASE),
+                      map)
 
     @staticmethod                
     def display_area(game, sector):
@@ -37,7 +38,7 @@ class Sector():
         elif game.enterprise.energy < 300:
             game.enterprise.condition = colours.fg.yellow + "YELLOW" + colours.reset
 
-        sb =   "     a  b  c  d  e  f  g  h \n"
+        sb = "     a  b  c  d  e  f  g  h \n"
         sb += f"    -=--=--=--=--=--=--=--=-             Sector: {sector.name}\n"
         info = list()
         info.append(f"             Number: [{sector.number}]\n")
@@ -54,7 +55,7 @@ class Sector():
                 sb += col
             sb += info[row]
         sb += f"    -=--=--=--=--=--=--=--=-             Docked: {game.enterprise.docked}\n"
-        sb +=  "     a  b  c  d  e  f  g  h \n"
+        sb += "     a  b  c  d  e  f  g  h \n"
         print(sb, end='')
 
         if sector.area_klingons > 0:
@@ -66,5 +67,3 @@ class Sector():
             game.display()
             game.display("Condition " + colours.fg.yellow + "YELLOW" + colours.reset + ": Low energy level.")
             game.enterprise.condition = colours.fg.yellow + "YELLOW" + colours.reset
-
-

@@ -1,21 +1,26 @@
 class WarpDest():
-    ''' Warp Speed: 
+    """ Warp Speed:
     One's based GALAXY navigation.
     Guaranteed SAFE placement.
-    '''
+    """
     def __init__(self, sector=-1, warp=0):
-        if sector > 64: sector = 64 # zOuter Limits =)
-        if warp > 10: warp = 10
-        if warp < 0:  warp = 0
+        if sector < 0:
+            sector = 0   # Outer Limits =)
+        elif sector > 64:
+            sector = 64  # Outer Limits =)
+        if warp > 10:
+            warp = 10
+        elif warp < 0:
+            warp = 0
         self.warp = warp
         self.sector = sector
 
     @staticmethod
     def parse(dest, sep=','):
-        '''
+        """
         Parse: sector-num, speed-float - None on error
         Example: 5,1.1 
-        '''
+        """
         dest = str(dest)
         cols = dest.split(sep)
         if len(cols) == 2:
@@ -24,8 +29,10 @@ class WarpDest():
                 if sector < 1:
                     sector = 1
                 speed = float(cols[1].strip())
-                if speed < 0: speed = 0.1
-                if speed > 9: speed = 9.0
+                if speed < 0:
+                    speed = 0.1
+                if speed > 9:
+                    speed = 9.0
                 return WarpDest(sector, speed)
             except:
                 pass
@@ -33,21 +40,25 @@ class WarpDest():
 
 
 class SubDest():
-    ''' Sublight Navigation:
+    """ Sublight Navigation:
     Zero based, AREA placement.
     Caveat, User! ;-)
-    '''
+    """
     def __init__(self, xpos=-1, ypos=-1):
-        if xpos > 7:  xpos = 7
-        if ypos > 7:  ypos = 7
-        if xpos < 0:  xpos = 0
-        if ypos < 0:  ypos = 0
+        if xpos > 7:
+            xpos = 7
+        elif xpos < 0:
+            xpos = 0
+        if ypos > 7:
+            ypos = 7
+        elif ypos < 0:
+            ypos = 0
         self.xpos = xpos
         self.ypos = ypos
 
     @staticmethod
     def parse(dest, sep=','):
-        '''
+        """
         WARNING: USER 1's -> 0-BASED TRANSLATION HERE
 
         Parse: [a-h], ypos 
@@ -55,7 +66,7 @@ class SubDest():
                 #,#  
            Return None on error
         Example: b,5 
-        '''
+        """
         dest = str(dest)
         cols = dest.split(sep)
         if len(cols) == 2:
@@ -63,7 +74,7 @@ class SubDest():
                 alph = cols[0].strip().lower()[0]
                 num = 0
                 if alph.isalpha():
-                    num = ord(alph) - 96 # 'a' == 1
+                    num = ord(alph) - 96   # 'a' == 1
                 else:
                     num = int(alph)
                 xpos = num
@@ -105,4 +116,3 @@ if __name__ == '__main__':
     assert(clone.warp == test.warp)
     assert(clone.xpos == test.xpos)
     assert(clone.ypos == test.ypos)
-

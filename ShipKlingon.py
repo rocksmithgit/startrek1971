@@ -2,6 +2,7 @@ import random
 import Glyphs
 from AbsShip import AbsShip
 
+
 class ShipKlingon(AbsShip):
 
     def __init__(self):
@@ -20,9 +21,9 @@ class ShipKlingon(AbsShip):
 
     @staticmethod
     def attack_if_you_can(game):
-        '''
+        """
         IF you ever find yourself in the AREA, then have at USS?
-        '''
+        """
         if game.is_cloked:
             return False
         from Calculators import Calc

@@ -89,6 +89,7 @@ QUITS = [
     "(Kirk shakes his head)",
     ]
 
+
 class Quips():
     
     @staticmethod
@@ -116,8 +117,3 @@ class Quips():
     @staticmethod
     def jibe_fatal_mistake():
         return MISTAKES[random.randrange(0, len(MISTAKES))]
-
-
-
-
-

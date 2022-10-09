@@ -1,8 +1,10 @@
 import random
+
+
 class colours:
     """Colours class:
     reset all colours settings with colors.reset;
-    two sub classes fg for foreground and bg for background; use as colours.subclass.colour mname.
+    two sub classes fg for foreground and bg for background; use as colours.subclass.colour_name.
     i.e. colours.fg.red or colours.bg.green
     The generic bold, disable, underline, reverse, strikethrough, and invisible work with the main class
     i.e. colours.bold
@@ -35,6 +37,7 @@ class colours:
         pink = '\033[95m'
         lightcyan = '\033[96m'
         random = random.choice(['\033[31m', '\033[33m', '\033[35m', '\033[91m', '\033[93m', '\033[95m'])
+        print(random)
 
     class bg:
         black = '\033[40m'

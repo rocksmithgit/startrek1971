@@ -1,12 +1,13 @@
 import abc
-import random
+#import random
 
-import Glyphs
-from Quips import Quips
-from Sector import Sector
+#import Glyphs
+#from Quips import Quips
+#from Sector import Sector
+
 
 class AbsShip(abc.ABC):
-    ''' The first step, into a much larger universe ... '''
+    """The first step, into a much larger universe ... """
 
     def __init__(self):
         self.shield_level = 0
@@ -14,4 +15,3 @@ class AbsShip(abc.ABC):
     @abc.abstractmethod
     def get_glyph(self):
         pass
-

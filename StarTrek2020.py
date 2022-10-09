@@ -17,7 +17,7 @@ class Game(Con):
 
     def __init__(self):
         self.is_testing = False
-        self.is_cloked  = False # unable to be fired-upon
+        self.is_cloked = False # unable to be fired-upon
         self.game_map = GameMap()
         self.enterprise = ShipEnterprise()
         self.star_date = 0
@@ -25,7 +25,7 @@ class Game(Con):
         self.destroyed = False
 
     def move_to(self, dest):
-        '''
+        """
         Move the player to a nav, or a sub,
         destination. Handles docking, random 
         warp-in placement, as well as deliberate
@@ -33,7 +33,7 @@ class Game(Con):
         
         Returns final resting coordinate on success.
         Raises ErrorEnterpriseCollision on yikes.
-        '''
+        """
         pos = self.game_map._go_to(dest)
         area = self.game_map.pw_area()
         was_docked = self.enterprise.docked
@@ -41,33 +41,30 @@ class Game(Con):
         for p in area._pieces:
             if p.glyph == Glyphs.STARBASE:
                 for point in Calc.surrounding(pos):
-                    if  p.xpos == point[0] and \
-                        p.ypos == point[1]:
-                            self.enterprise.docked = True
-                            ShipStarbase.dock_enterprise(self.enterprise)
+                    if p.xpos == point[0] and p.ypos == point[1]:
+                        self.enterprise.docked = True
+                        ShipStarbase.dock_enterprise(self.enterprise)
         if was_docked and self.enterprise.docked == False:
             ShipStarbase.launch_enterprise(self.enterprise)
         return pos
 
     def game_on(self):
-        '''
+        """
         See if the game is still running.
-        '''
-        running = self.enterprise.energy > 0 and not \
-        self.destroyed and self.game_map.game_klingons > 0 and \
-        self.time_remaining > 0
+        """
+        running = self.enterprise.energy > 0 and not self.destroyed and self.game_map.game_klingons > 0 and self.time_remaining > 0
         return running
 
     def run(self):
-        '''
+        """
         The game loop - runs until the game is over.
-        '''
+        """
         self.show_strings(TrekStrings.LOGO_TREKER)
         game.star_date = random.randint(2250, 2300)
         game.time_remaining = random.randint(40, 45)
         game.destroyed = False
-        stars     = random.randint(500, 700) # 4096 = ALL
-        aliens    = random.randint(14, 24)
+        stars = random.randint(500, 700)  # 4096 = ALL
+        aliens = random.randint(14, 24)
         starbases = random.randint(6, 8)
         game.game_map.randomize(starbases, stars, aliens)
         dest = WarpDest(64, 0)

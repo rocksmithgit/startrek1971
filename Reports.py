@@ -1,10 +1,11 @@
-import Glyphs
+#import Glyphs
 from Quips import Quips
 
+
 class Stats():
-    '''
+    """
     Reports do not generate damage.
-    '''
+    """
     @staticmethod
     def show_ship_status(game):
         game.display()
@@ -40,7 +41,7 @@ class Stats():
             msg = "MISSION FAILED: OUT OF ENERGY."
             game.show_banner([msg], '!')
         elif game.game_map.game_klingons == 0:
-            msg = "MISSION ACCOMPLISHED","ENEMIES DESTROYED","WELL DONE!"
+            msg = "MISSION ACCOMPLISHED", "ENEMIES DESTROYED", "WELL DONE!"
             game.show_banner(msg)
         elif game.time_remaining == 0:
             msg = "MISSION FAILED: OUT OF TIME."
@@ -48,4 +49,3 @@ class Stats():
         else:
             ary = ["::::::::: MISSION ABORTED :::::::::", Quips.jibe_quit()]
             game.show_banner(ary, ':')
-
