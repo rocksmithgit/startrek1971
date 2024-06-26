@@ -142,7 +142,10 @@ class Control():
         game.display("Photon torpedo fired...")
         positions = [x for x in range(12)]
         for pos in positions:
-            game.display_moving_photon(Glyphs.ENTERPRISE + " "*pos + Glyphs.PHOTON + " "*(12-pos) + Glyphs.KLINGON)
+            reset = '\033[0m'
+            rndm = random.choice(['\033[31m', '\033[33m', '\033[35m', '\033[91m', '\033[93m', '\033[95m'])
+#            game.display_moving_photon(Glyphs.ENTERPRISE + " "*pos + Glyphs.PHOTON + " "*(12-pos) + Glyphs.KLINGON)
+            game.display_moving_photon(Glyphs.ENTERPRISE + " "*pos + rndm + Glyphs.PHOTON + reset + " "*(12-pos) + Glyphs.KLINGON)
         game.display_reset
 
         game.enterprise.photon_torpedoes -= 1
